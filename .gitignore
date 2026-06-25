@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Large raw/intermediate data (reproducible via the ingestion pipeline)
+data/raw/*.parquet
+data/raw/*.csv
+data/processed/*.parquet
+features/*.parquet
+models/*.joblib
+
+# Keep directory placeholders
+!**/.gitkeep
+
+# OS
+.DS_Store

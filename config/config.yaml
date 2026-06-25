@@ -1,0 +1,97 @@
+# =============================================================================
+# NFL Prediction Engine — central configuration
+# Everything that controls a run lives here so results are reproducible.
+# =============================================================================
+
+seasons:
+  # Seasons used ONLY to warm up rolling windows / ELO. Never predicted, never
+  # scored. They give Week 1 of the first evaluation season real prior history.
+  warmup: [2020]
+  # Seasons that are actually predicted, backtested, and scored.
+  evaluate: [2021, 2022, 2023, 2024, 2025]
+
+# First (season, week) that we are allowed to PREDICT. Walk-forward begins here.
+# Per the project spec, prediction coverage starts at 2021 Week 1. With warmup
+# data loaded, rolling windows are populated even in Week 1.
+start_season: 2021
+start_week: 1
+
+random_seed: 42
+
+paths:
+  raw: data/raw
+  processed: data/processed
+  features: features
+  models: models
+  backtests: backtests
+  results: results
+  reports: reports
+
+data_sources:
+  # nflverse play-by-play (EPA, success, situational). One parquet per season.
+  pbp_url: "https://github.com/nflverse/nflverse-data/releases/download/pbp/play_by_play_{season}.parquet"
+  # nfldata games file: schedule + final scores + closing Vegas lines + rest/weather.
+  games_url: "https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv"
+  # nflverse weekly injury reports (pre-game status). One parquet per season.
+  injuries_url: "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_{season}.parquet"
+
+features:
+  rolling_windows: [4, 8]
+  ewm_halflife: 4          # half-life (games) for weighted recent form
+  min_plays_for_stat: 20   # below this a team-game stat is treated as thin
+  elo:
+    base: 1500.0
+    k: 20.0
+    hfa_points: 55.0       # ELO points for home field
+    mov_mult: true         # margin-of-victory multiplier (FiveThirtyEight style)
+    season_regression: 0.33 # revert 1/3 toward mean between seasons
+
+# Weighted composite model — weights are PERCENT and MUST sum to 100.
+# These mirror the project specification tier-by-tier.
+composite_weights:
+  # Tier 1 — Core team efficiency (60)
+  off_epa_play: 12
+  def_epa_play: 12
+  off_success: 8
+  def_success: 8
+  off_dvoa_proxy: 10
+  def_dvoa_proxy: 10
+  # Tier 2 — Team strength (20)
+  elo: 8
+  sos: 4
+  hfa: 4
+  rest_travel: 4
+  # Tier 3 — Situational efficiency (15)
+  red_zone_td: 4
+  third_down: 4
+  pressure_rate: 3
+  sack_rate_diff: 2
+  turnover_diff: 2
+  # Tier 4 — Market adjustment (5)
+  closing_line_value: 2
+  injury_impact: 3
+
+confidence_tiers:
+  elite: 90      # >= 90  Elite Play
+  strong: 80     # 80-89  Strong Play
+  moderate: 70   # 70-79  Moderate Play
+  # < 70           Pass
+
+safe_bet_filter:
+  min_score_advantage_pct: 10.0   # composite advantage >= 10% of scale
+  require_positive_epa_diff: true
+  require_positive_dvoa_diff: true
+  block_on_qb_injury_disadvantage: true
+  block_when_market_opposes: true
+
+betting:
+  unit: 1.0               # flat stake = 1 unit
+  default_vig_odds: -110  # used when book odds missing for spread/total
+  starting_bankroll: 100.0
+  min_confidence_to_bet: 70   # only place bets on Moderate+ plays
+  value_threshold: 0.0    # extra edge (model prob - implied) required for ML value bets
+  bet_markets: ["ats", "moneyline", "total"]
+
+leakage:
+  audit_file: leakage_audit_report.csv
+  hard_fail: true         # abort the run if any feature references future data

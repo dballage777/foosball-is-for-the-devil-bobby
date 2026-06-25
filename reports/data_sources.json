@@ -1,0 +1,93 @@
+[
+  {
+    "dataset": "pbp_2020",
+    "url": "https://github.com/nflverse/nflverse-data/releases/download/pbp/play_by_play_2020.parquet",
+    "rows": 47705,
+    "local_file": "data/raw/pbp_2020.parquet",
+    "downloaded_utc": "2026-06-25T15:08:14+00:00"
+  },
+  {
+    "dataset": "pbp_2021",
+    "url": "https://github.com/nflverse/nflverse-data/releases/download/pbp/play_by_play_2021.parquet",
+    "rows": 49922,
+    "local_file": "data/raw/pbp_2021.parquet",
+    "downloaded_utc": "2026-06-25T15:08:16+00:00"
+  },
+  {
+    "dataset": "pbp_2022",
+    "url": "https://github.com/nflverse/nflverse-data/releases/download/pbp/play_by_play_2022.parquet",
+    "rows": 49434,
+    "local_file": "data/raw/pbp_2022.parquet",
+    "downloaded_utc": "2026-06-25T15:08:19+00:00"
+  },
+  {
+    "dataset": "pbp_2023",
+    "url": "https://github.com/nflverse/nflverse-data/releases/download/pbp/play_by_play_2023.parquet",
+    "rows": 49665,
+    "local_file": "data/raw/pbp_2023.parquet",
+    "downloaded_utc": "2026-06-25T15:08:21+00:00"
+  },
+  {
+    "dataset": "pbp_2024",
+    "url": "https://github.com/nflverse/nflverse-data/releases/download/pbp/play_by_play_2024.parquet",
+    "rows": 49492,
+    "local_file": "data/raw/pbp_2024.parquet",
+    "downloaded_utc": "2026-06-25T15:08:23+00:00"
+  },
+  {
+    "dataset": "pbp_2025",
+    "url": "https://github.com/nflverse/nflverse-data/releases/download/pbp/play_by_play_2025.parquet",
+    "rows": 48771,
+    "local_file": "data/raw/pbp_2025.parquet",
+    "downloaded_utc": "2026-06-25T15:08:26+00:00"
+  },
+  {
+    "dataset": "games",
+    "url": "https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv",
+    "rows": 7548,
+    "local_file": "data/raw/games.csv",
+    "downloaded_utc": "2026-06-25T15:08:33+00:00"
+  },
+  {
+    "dataset": "injuries_2020",
+    "url": "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_2020.parquet",
+    "rows": 5661,
+    "local_file": "data/raw/injuries_2020.parquet",
+    "downloaded_utc": "2026-06-25T15:08:34+00:00"
+  },
+  {
+    "dataset": "injuries_2021",
+    "url": "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_2021.parquet",
+    "rows": 5587,
+    "local_file": "data/raw/injuries_2021.parquet",
+    "downloaded_utc": "2026-06-25T15:08:34+00:00"
+  },
+  {
+    "dataset": "injuries_2022",
+    "url": "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_2022.parquet",
+    "rows": 5682,
+    "local_file": "data/raw/injuries_2022.parquet",
+    "downloaded_utc": "2026-06-25T15:08:35+00:00"
+  },
+  {
+    "dataset": "injuries_2023",
+    "url": "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_2023.parquet",
+    "rows": 5599,
+    "local_file": "data/raw/injuries_2023.parquet",
+    "downloaded_utc": "2026-06-25T15:08:35+00:00"
+  },
+  {
+    "dataset": "injuries_2024",
+    "url": "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_2024.parquet",
+    "rows": 6215,
+    "local_file": "data/raw/injuries_2024.parquet",
+    "downloaded_utc": "2026-06-25T15:08:36+00:00"
+  },
+  {
+    "dataset": "injuries_2025",
+    "url": "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_2025.parquet",
+    "rows": 6068,
+    "local_file": "data/raw/injuries_2025.parquet",
+    "downloaded_utc": "2026-06-25T15:08:36+00:00"
+  }
+]
