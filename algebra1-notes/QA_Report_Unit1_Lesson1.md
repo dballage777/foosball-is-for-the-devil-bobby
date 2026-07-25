@@ -17,11 +17,13 @@ The Geometry packet was analyzed to build the reusable template applied here. Co
 | Title line: `Subject: Unit X – Lesson Y: Topic` | `Algebra 1 — Unit 1 – Lesson 1 (Objective 1‑1): Variables and Expressions` |
 | **OBJECTIVES** header with *"I can…"* statements | Recreated as **OBJECTIVES** with six measurable "I can" targets |
 | **REAL LIFE USE** section | Recreated as **REAL LIFE USE** with authentic bulleted applications |
-| **VOCABULARY** presented in a **table** (Arimo/Arial body, bold headers) | Recreated as a 3‑column table (Term / Definition / Example) |
+| **VOCABULARY** in a **fill‑in‑the‑blank table** (student writes the term) | Recreated as a 3‑column fill‑in table: **Vocabulary Word (blank)** / Definition / Example (blank), with a Word Bank |
+| Numbered practice with **blanks left for students to work** | Examples rebuilt as three tables (Sets A–C) with **blank answer columns** — no answers pre‑filled |
 | Bold, ALL‑CAPS section headings; clean spacing | Navy bold small‑caps headers with a thin rule under each |
-| Numbered **Examples** (Example 1, 2, 3…) with room to work | Examples preserved and grouped into Sets A–C |
 | Arimo body font (metric twin of Arial) | Set document font to **Arial** for visual parity |
 | US Letter page, generous margins, page numbers | US Letter (8.5×11), 0.75″ margins, running header + footer |
+
+> **Format note (this revision):** To match the Geometry packet, the document is a **student fill‑in‑the‑blank packet**, not an answer key. Vocabulary terms and all practice answers are left blank. Teaching illustrations in the notes deliberately use *neutral* variables (a, b, n, y) so that no practice answer (problems 1–11) is given away anywhere in the document.
 
 ---
 
@@ -48,10 +50,10 @@ Every element of the original Algebra packet is present in the new document. **N
 
 - **Learning Objectives** — six student‑friendly, measurable "I can" statements (originals had none).
 - **Real Life Use** — six authentic application bullets (Business/Finance, Sports Analytics, Medicine, Computer Science, Construction/Engineering, Everyday Decisions).
-- **Vocabulary expansion** — added an *Example* column and four supporting terms not originally listed: **term, coefficient, operation, evaluate**. Original four definitions kept word‑for‑word.
-- **Operation Key Words table** — the original had the four operation headings with blank space; filled in with standard signal words (plus, sum, more than, minus, difference, less than, product, quotient, per, etc.) that directly match the vocabulary used in problems 1–11.
-- **Main Lesson Notes** — four short teaching sub‑sections: *What an Expression Is; Operation Key Words; Ways to Show Multiplication (coefficient / dot / parentheses); Evaluating an Expression.*
-- **Worked solutions** — each of problems 1–11 now shows the expression and, where applicable, the evaluated answer, with brief "why" reasoning — turning the student packet into a teacher's‑guide version.
+- **Vocabulary (fill‑in‑the‑blank)** — a 3‑column table (Vocabulary Word / Definition / Example) with the **word column blank** for students, plus a **Word Bank**. Original four definitions kept word‑for‑word; four supporting terms added (**term, coefficient, operation, evaluate**) as additional fill‑in rows.
+- **Operation Key Words table** — the original had the four operation headings with blank space; filled in with standard signal words (plus, sum, more than, minus, difference, less than, product, quotient, per, etc.). This is kept **as a reference** so students can use it while completing the blank practice.
+- **Main Lesson Notes** — four short teaching sub‑sections: *What an Expression Is; Operation Key Words; Ways to Show Multiplication (coefficient / dot / parentheses); Evaluating an Expression.* Illustrations use neutral variables so no practice answer is revealed.
+- **Practice tables (Sets A–C)** — the 11 problems are laid out in Geometry‑style tables with **blank answer columns**: Set A (word phrase → expression), Set B (expression → two ways in words), Set C (situation → expression + evaluate).
 - **Order‑matters callout box** — highlights the subtraction/division order trap.
 - **Rules, Properties & Reference** callout — consolidates the translation rules.
 - **Common Mistakes** — six lesson‑specific misconceptions (reversing "less than", quotient order, using ×, dropping the constant, etc.).
@@ -75,22 +77,25 @@ Every element of the original Algebra packet is present in the new document. **N
 - **Blank operation key‑words** → completed with standard terms.
 - **Incomplete vocabulary support** → added examples and four helper terms.
 - **Direction‑line mismatch:** the original heading over items 1–4 read *"Write a word phrase for each algebraic expression,"* but the items are themselves word phrases requiring an algebraic expression. The direction was corrected to *"Write an algebraic expression for each word phrase."* The four items themselves are unchanged. *(This is a corrected instruction, not removed content.)*
-- **Problem 10 internal note:** the prompt asks for an expression converting *dollars → cars* (d ÷ 5), then asks earnings for *12 cars* (cars → dollars). Both parts are preserved exactly; a short teacher note flags the inverse relationship as a discussion point rather than altering the problem.
 
 ---
 
-## 6. Mathematical Accuracy Check (Rule 4)
+## 6. Answer Key — *for the teacher only* (NOT printed in the student packet)
 
-All expressions and evaluations were verified:
+The student packet intentionally leaves all answers blank. The intended answers below were worked and verified so you have them on hand; they do **not** appear anywhere in the `.docx`.
 
-| Item | Expression | Evaluation |
+| Item | Intended expression | Evaluation |
 |---|---|---|
 | 1 | x + 12 | — |
-| 2 | m ÷ 18 | — |
+| 2 | m ÷ 18  (m/18) | — |
 | 3 | 6h + 7.9 | — |
 | 4 | 2g + 25 | — |
+| 5 | 9 + r | "9 plus r" / "the sum of 9 and r" |
+| 6 | q – r | "q minus r" / "the difference of q and r" |
+| 7 | 7m + 5 | "5 more than the product of 7 and m" / "7 times m, increased by 5" |
+| 8 | 2j ÷ 6 | "the quotient of 2j and 6" / "2 times j, divided by 6" |
 | 9 | 62m | 62 × 25 = **1,550 words** ✔ |
-| 10 | d ÷ 5 | 5 × 12 = **$60** ✔ |
+| 10 | d ÷ 5 | 12 cars → 5 × 12 = **$60** ✔ *(note: the expression converts dollars→cars; the follow‑up converts cars→dollars — a nice inverse‑relationship discussion)* |
 | 11 | 12 + 2t | 12 + 2(4) = **$20** ✔ |
 
 No mathematical errors introduced.
@@ -101,10 +106,11 @@ No mathematical errors introduced.
 
 - ✔ US Letter page size (12240 × 15840 twips), 0.75″ margins.
 - ✔ Built with Word **Heading**-appropriate styling, consistent spacing, and page breaks between major sections — clean for conversion to Google Docs.
-- ✔ Tables use fixed DXA widths on both table and cells (Google‑Docs‑safe); light‑blue header shading via `CLEAR` shading (no black‑box bug).
-- ✔ Bulleted/▢ "I can" lists use real Word numbering (no literal bullet glyphs typed inline).
+- ✔ Tables use fixed DXA widths on both table and cells (Google‑Docs‑safe); light‑blue header shading via `CLEAR` shading (no black‑box bug). Fill‑in rows use `ATLEAST` row heights so students have room to write.
+- ✔ "I can" and bullet lists use real Word numbering (no literal bullet glyphs typed inline).
 - ✔ Running header ("Algebra 1 • Unit 1 • Lesson 1") and footer with page number.
-- ⚠ **Note:** A rendered PDF preview could not be generated in this environment (LibreOffice headless conversion is non‑functional here). Content and structure were instead verified by re‑parsing the finished `.docx` (106 paragraphs, 4 tables, all original text present). Please open the file in Word or Google Docs to confirm the visual layout.
+- ✔ **Answer‑leak scan:** an automated check confirmed none of the intended answers (x + 12, m ÷ 18, 6h + 7.9, 2g + 25, 62m, 1,550, d ÷ 5, 12 + 2t, $60, $20, etc.) appear anywhere in the packet, and all 11 problem statements are present verbatim.
+- ⚠ **Note:** A rendered PDF preview could not be generated in this environment (LibreOffice headless conversion is non‑functional here). Content and structure were instead verified by re‑parsing the finished `.docx` (7 tables — vocabulary, operation key words, two callouts, and the three blank practice tables). Please open the file in Word or Google Docs to confirm the visual layout.
 
 ---
 
