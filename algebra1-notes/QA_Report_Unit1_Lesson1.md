@@ -17,7 +17,7 @@ The Geometry packet was analyzed to build the reusable template applied here. Co
 | Title line: `Subject: Unit X – Lesson Y: Topic` | `Algebra 1 — Unit 1 – Lesson 1 (Objective 1‑1): Variables and Expressions` |
 | **OBJECTIVES** header with *"I can…"* statements | Recreated as **OBJECTIVES** with six measurable "I can" targets |
 | **REAL LIFE USE** section | Recreated as **REAL LIFE USE** with authentic bulleted applications |
-| **VOCABULARY** in a **fill‑in‑the‑blank table** (student writes the term) | Recreated as a 3‑column fill‑in table: **Vocabulary Word (blank)** / Definition / Example (blank), with a Word Bank |
+| **VOCABULARY** in a **fill‑in‑the‑blank table** (student writes the term) | Recreated as a **2‑column** table: **Definition with an inline blank** ("A ______ is a letter or a symbol…") in column 1, **worked Example** in column 2, with a Word Bank |
 | Numbered practice with **blanks left for students to work** | Examples rebuilt as three tables (Sets A–C) with **blank answer columns** — no answers pre‑filled |
 | Bold, ALL‑CAPS section headings; clean spacing | Navy bold small‑caps headers with a thin rule under each |
 | Arimo body font (metric twin of Arial) | Set document font to **Arial** for visual parity |
@@ -50,7 +50,7 @@ Every element of the original Algebra packet is present in the new document. **N
 
 - **Learning Objectives** — six student‑friendly, measurable "I can" statements (originals had none).
 - **Real Life Use** — six authentic application bullets (Business/Finance, Sports Analytics, Medicine, Computer Science, Construction/Engineering, Everyday Decisions).
-- **Vocabulary (fill‑in‑the‑blank)** — a 3‑column table (Vocabulary Word / Definition / Example) with the **word column blank** for students, plus a **Word Bank**. Original four definitions kept word‑for‑word; four supporting terms added (**term, coefficient, operation, evaluate**) as additional fill‑in rows.
+- **Vocabulary (fill‑in‑the‑blank)** — a **2‑column** table: column 1 is the definition sentence with the vocabulary word left blank ("A ______ is a value that does not change."), column 2 shows a **worked example**. A **Word Bank** is provided below. Original four definitions kept word‑for‑word; four supporting terms added (**term, coefficient, operation, evaluate**) as additional fill‑in rows.
 - **Operation Key Words table** — the original had the four operation headings with blank space; filled in with standard signal words (plus, sum, more than, minus, difference, less than, product, quotient, per, etc.). This is kept **as a reference** so students can use it while completing the blank practice.
 - **Main Lesson Notes** — four short teaching sub‑sections: *What an Expression Is; Operation Key Words; Ways to Show Multiplication (coefficient / dot / parentheses); Evaluating an Expression.* Illustrations use neutral variables so no practice answer is revealed.
 - **Practice tables (Sets A–C)** — the 11 problems are laid out in Geometry‑style tables with **blank answer columns**: Set A (word phrase → expression), Set B (expression → two ways in words), Set C (situation → expression + evaluate).
