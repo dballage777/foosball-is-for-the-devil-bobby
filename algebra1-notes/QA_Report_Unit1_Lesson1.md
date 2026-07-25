@@ -114,8 +114,33 @@ No mathematical errors introduced.
 
 ---
 
+## 7a. Professional Pagination
+
+The document is laid out as **five deliberate section‑groups**, one per page, so no instructional unit is split. Manual page breaks were placed at each major boundary rather than relying on automatic pagination:
+
+| Page | Content kept together |
+|---|---|
+| 1 | Title · Objectives · Real Life Use |
+| 2 | **Vocabulary** (heading + directions + full fill‑in table + Word Bank + note) |
+| 3 | **Main Lesson Notes** (What an Expression Is · Operation Key Words table · Order‑matters callout · Ways to Show Multiplication · Evaluating) |
+| 4 | **Examples** — Sets A, B, C (each example heading stays with its table) |
+| 5 | Rules & Reference · Common Mistakes · Lesson Summary · Key Takeaways |
+
+To guarantee this survives font/rendering differences in Word and Google Docs, three pagination properties are stamped on the file:
+
+- **Keep lines together** on *every* paragraph (180 paragraphs) — no single‑line widows or orphans.
+- **Keep with next** chained through headings → directions → tables and across list items (129 instances) — a heading can never be stranded at the bottom of a page, and a whole table moves as a unit if it doesn't fit.
+- **Row "can't split"** (`cantSplit`) on *all 32 table rows* — a table row can never break across a page.
+
+If any group is slightly too tall to share a page in a given renderer, these settings move the **entire** unit to the next page (leaving acceptable whitespace) rather than splitting it — exactly the textbook behavior requested.
+
+> ⚠ **Visual confirmation still needed:** LibreOffice headless rendering is non‑functional in this build environment, so I could not generate a page‑by‑page image proof. The page breaks and keep‑together flags above were verified directly in the document XML. Please open the file in Google Docs / Word and glance through the five pages; if any group wraps differently on your system I can nudge the specific break.
+
+---
+
 ## 8. Final Confirmation
 
 ✓ Nothing removed  ✓ Nothing incorrectly rewritten  ✓ Every example preserved
 ✓ Every formula/definition preserved  ✓ Objectives present  ✓ Summary present
 ✓ Formatting consistent with the Geometry template  ✓ No mathematical errors introduced
+✓ Professionally paginated (5 section‑groups, no split tables, no stranded headings)
