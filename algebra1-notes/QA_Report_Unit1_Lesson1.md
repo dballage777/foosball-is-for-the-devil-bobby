@@ -122,9 +122,9 @@ The document is laid out as **five deliberate section‑groups**, one per page, 
 |---|---|
 | 1 | Title · Objectives · Real Life Use |
 | 2 | **Vocabulary** (heading + directions + full fill‑in table + Word Bank + note) |
-| 3 | **Main Lesson Notes** (What an Expression Is · Operation Key Words table · Order‑matters callout · Ways to Show Multiplication · Evaluating) |
+| 3 | **Main Lesson Notes** (What an Expression Is · Operation Key Words table · Order‑matters callout · Ways to Show Multiplication · Evaluating) · **Common Mistakes** |
 | 4 | **Examples** — Sets A, B, C (each example heading stays with its table) |
-| 5 | Rules & Reference · Common Mistakes · Lesson Summary · Key Takeaways |
+| 5 | Rules & Reference · Lesson Summary · Key Takeaways |
 
 To guarantee this survives font/rendering differences in Word and Google Docs, three pagination properties are stamped on the file:
 
