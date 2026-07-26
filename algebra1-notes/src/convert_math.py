@@ -30,6 +30,9 @@ TARGETS = {
    [("t","10. "),("frac","n","4"),("t"," = 15")],
  "11. -18 = y / 6":
    [("t","11. -18 = "),("frac","y","6")],
+ # RULE: a division symbol ( ÷ ) always becomes a stacked fraction.
+ "10. Evaluate 3xy ÷ r + 8; use x = 3, y = 4, and r = 6":
+   [("t","10. Evaluate "),("frac","3xy","r"),("t"," + 8; use x = 3, y = 4, and r = 6")],
  "Marcus scored 15 points in the basketball game. This was 1/4 of the total points the team scored.":
    [("t","Marcus scored 15 points in the basketball game. This was "),("frac","1","4"),("t"," of the total points the team scored.")],
 }
