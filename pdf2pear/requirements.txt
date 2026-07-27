@@ -1,0 +1,16 @@
+# core (offline path works with just these)
+pdfplumber
+pypdfium2
+pillow
+
+# optional: embedded-figure inventory
+pymupdf
+
+# optional: OCR backends (set the matching API key to enable)
+requests            # Mathpix
+google-generativeai # Gemini vision
+anthropic           # Claude vision
+openai              # OpenAI vision
+
+# optional: supervised browser automation (ToS-gray; run manually)
+playwright
