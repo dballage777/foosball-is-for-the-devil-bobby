@@ -1,0 +1,16 @@
+1. a + 11
+2. 17 - n
+3. n + 12
+4. 6k
+5. 4x^9
+6. 11x + 9
+7. the quotient of x and 2
+8. the sum of 10 and n
+9. the quotient of 24 and m increased by 12
+10. 5 less than twice a number
+11. m squared increased by 14
+12. 22 less than the product of 3 and r
+13. six to the second power
+14. w to the third power
+15. 32g ; 640 miles
+16. 9 + 1.50t ; $16.50
