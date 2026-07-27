@@ -3,7 +3,7 @@
 """
 import re
 
-MATH_HINT = re.compile(r"[=^√≤≥≠π∑∫]|/|\\frac|\\sqrt|[a-zA-Z]\^?\d|[a-zA-Z]\s*[+\-*/]\s*\d")
+MATH_HINT = re.compile(r"[=^√≤≥≠π∑∫²³¹⁰⁴⁵⁶⁷⁸⁹]|/|\\frac|\\sqrt|[a-zA-Z]\^?\d|[a-zA-Z]\s*[+\-*/]\s*\d")
 LETTERS_ONLY = re.compile(r"^[A-E](\s*[,;/&]| and )\s*[A-E]"  # 2+ letters
                           r"(\s*(?:[,;/&]| and )\s*[A-E])*$", re.I)
 SINGLE_LETTER = re.compile(r"^[A-E]$", re.I)
@@ -11,8 +11,10 @@ TF = {"true", "false", "t", "f"}
 
 
 def classify(answer, choices=None):
-    """Return (type, normalized_answer)."""
+    """Return (type, normalized_answer). Display value stays verbatim; a normalized
+    copy (unicode minus -> ASCII) is used only for pattern matching."""
     a = str(answer).strip()
+    a = a.replace("−", "-")          # U+2212 MINUS SIGN -> hyphen (display + match)
     low = a.lower()
 
     # explicit multi-letter selection
