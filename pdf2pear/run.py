@@ -30,7 +30,7 @@ from src.parse_answers import parse_answer_key
 from src.build_guide import build_guide
 from src.validate import validate
 from src.build_backup import write_csv, write_qti
-from src.automate_pear import upload_and_place
+from src.click_points import compute_click_points
 
 
 def main():
@@ -72,16 +72,16 @@ def main():
     print("7/8 validating ...")
     validate(answer_map, problems, figures, os.path.join(out, "validation_report.html"))
 
-    print("8/8 writing portability backups ...")
+    print("8/8 writing backups + automation targets ...")
     write_csv(answer_map, os.path.join(backup, "items.csv"))
     write_qti(answer_map, os.path.join(backup, "qti_package.zip"))
-
-    # optional supervised automation (off unless PDF2PEAR_PLAYWRIGHT=1)
-    upload_and_place(answer_map, config.PROBLEMS_PDF)
+    compute_click_points(config.PROBLEMS_PDF, os.path.join(out, "click_points.json"))
 
     print("\nDone. Open output/placement_guide.html and output/validation_report.html.")
     print("Then in Pear Assess: Create -> Snap Quiz -> upload input/Problems.pdf and "
           "enter the answers from the guide.")
+    print("Optional (desktop OS): `python automate.py` to type answers as you place "
+          "each box (supervised).")
 
 
 if __name__ == "__main__":

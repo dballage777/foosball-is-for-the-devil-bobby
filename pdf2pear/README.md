@@ -47,11 +47,40 @@ The offline default reads `input/Answers.txt` (or the text layer of a text-based
 stubbed). Mathpix is the most accurate for math; Gemini/Claude vision are strong
 for reading a printed key.
 
-## Optional: supervised browser automation
-`src/automate_pear.py` (off unless `PDF2PEAR_PLAYWRIGHT=1`) drives Snap Quiz with
-Playwright. Pear has no API, so this automates the real UI — **ToS-gray and
-selector-fragile**; run supervised on your own login. Capture selectors with
-`playwright codegen` and fill the placement loop.
+## Supervised browser automation (`python automate.py`)
+Pear has no API, so this drives the **real Snap Quiz UI** with Playwright — only
+doing what a human does, on **your** login. **ToS-gray, supervised, low-rate.**
+Requires a **desktop OS with a display** (on ChromeOS: the Linux/Crostini
+container). Install: `pip install playwright` (a Chromium is auto-located; set
+`PDF2PEAR_CHROME=/path/to/chrome` if needed).
+
+Two modes:
+
+- **assist** (default, robust, **no Pear selectors needed**):
+  ```bash
+  python automate.py            # or: --points to also type point values
+  ```
+  A browser opens; you sign in, open **Create → Snap Quiz**, and upload
+  `Problems.pdf`. Then for each item the terminal shows the answer; you place the
+  box and click into its field, press **Enter**, and the script **types the
+  pre-parsed answer** into the focused field (`s`=skip, `p`=also type points,
+  `q`=quit). Because it types into whatever you focused, it does **not** break
+  when Pear changes its UI. A screenshot per item is saved to `output/screenshots/`.
+
+- **auto** (advanced scaffold, fragile): fully clicks type → location → answer
+  using selectors you capture once with `playwright codegen` into
+  `src/selectors.py` (template: `src/selectors.example.py`) plus
+  `output/click_points.json` (auto-generated). Falls back to a clear message per
+  item if a selector fails.
+  ```bash
+  cp src/selectors.example.py src/selectors.py   # then fill it via codegen
+  python automate.py --mode auto
+  ```
+
+**What automation can't remove:** you still must be logged in and have the PDF
+uploaded; auto mode's click coordinates are approximate (Pear renders the PDF in
+its own canvas), so supervise it. The assist mode is the recommended, reliable
+path — it removes the lookup/typing, you keep the placement clicks.
 
 ## Question types inferred
 `multiple_choice`, `multiple_select`, `true_false`, `text_entry`, `math`
