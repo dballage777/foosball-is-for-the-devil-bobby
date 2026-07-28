@@ -1,0 +1,18 @@
+Pear Assess — Content Converter workflow (no Linux, no extra tools)
+
+For each worksheet you have TWO files:
+  * "... Questions (Content Converter Ready).pdf"  -> UPLOAD THIS
+  * "... ANSWER KEY.pdf"                            -> keep for yourself
+
+Steps in Pear Assess:
+  1. Create new test -> Content Converter -> upload the "Questions ... Ready" PDF.
+  2. Pear auto-extracts each numbered line into a question item. Review the split.
+  3. For each item, set the correct answer + points from the matching ANSWER KEY.
+     (Content Converter imports the questions, not the key — you set answers once.)
+  4. Publish / assign.
+
+Notes
+  * Math is written in plain text (v/3, x^2, -(1/2)x) so it extracts cleanly.
+  * Each item is self-contained ("Solve: ...") so Content Converter makes one clean
+    item per line instead of merging them.
+  * Do NOT upload the ANSWER KEY file — it is teacher-only.
