@@ -18,20 +18,45 @@ a properly licensed NIV feed can be plugged in when licensing is in place.
 - The reader (`src/app/bible/[book]/[chapter]/page.tsx`) depends only on the
   interface, so swapping providers requires **no UI changes**.
 
+## Recommended free alternative to the NIV: the Berean Standard Bible (BSB)
+
+You cannot legally reproduce the NIV's wording, and you must not try to imitate
+it. The correct approach is to serve a translation that is **itself freely
+licensed** — not a look-alike of the NIV.
+
+The **Berean Standard Bible (BSB)** is the recommended default: a modern,
+readable translation in a similar register to the NIV, released for free use
+(dedicated to the public / freely licensed by its publisher). Using the BSB is
+not "getting around" a license — it is choosing a translation with no license
+restriction, so no NIV rights are needed.
+
+The app therefore defaults to **BSB via API.Bible** when an API key is present,
+and to the public-domain **WEB** when it is not.
+
 ## Providers implemented
 
-### 1. Public-domain (default) — `public_domain`
+### 1. API.Bible — `apibible` (default when `BIBLE_API_KEY` is set)
+- Source: `scripture.api.bible` (American Bible Society).
+- Default target: **BSB**, resolved from the catalog by abbreviation so you do
+  not need to hard-code a version id. Set `BIBLE_VERSION_ABBR="BSB"` (default),
+  or pin `BIBLE_DEFAULT_VERSION_ID` to an exact bible id.
+- **A key alone does not grant NIV rights.** To serve the NIV, obtain an NIV
+  license, enable that edition for your key, and set `BIBLE_DEFAULT_VERSION_ID`
+  to the licensed NIV id. BSB needs no such license.
+- Env: `BIBLE_API_KEY`, `BIBLE_VERSION_ABBR`, `BIBLE_DEFAULT_VERSION_ID`.
+
+### 2. Public-domain — `public_domain` (automatic fallback)
 - Source: **World English Bible (WEB)** via `bible-api.com`.
 - License: WEB is **public domain**; free to read, cache, and display.
-- This is a real, legitimate scripture source used for development and for
-  users without an NIV license. It is clearly labeled "WEB", not "NIV".
+- Used automatically when no API key is set, or if API.Bible is temporarily
+  unavailable/unauthorized. Clearly labeled "WEB", never "NIV".
 
-### 2. API.Bible — `apibible`
-- Source: `scripture.api.bible` (American Bible Society).
-- Provides many versions via one API. **An API key alone does not grant NIV
-  rights** — a licensed edition id must be enabled for your key by the rights
-  holder, with its own attribution string returned per chapter.
-- Env: `BIBLE_API_KEY`, `BIBLE_DEFAULT_VERSION_ID`.
+## Provider selection & fallback
+
+`BIBLE_PROVIDER` (empty = auto): auto uses API.Bible when `BIBLE_API_KEY` is
+present, else public domain. The service wraps the primary provider so that
+`not_configured`, `unauthorized`, or `provider_unavailable` errors fall back to
+WEB. Genuine `not_found` / `invalid_reference` errors are surfaced as 404s.
 
 ## To serve the NIV (dependency — requires a licensing decision)
 
@@ -42,7 +67,9 @@ a properly licensed NIV feed can be plugged in when licensing is in place.
 3. Confirm caching/attribution terms and honor the returned copyright string
    (already surfaced in the reader footer).
 
-Until that license exists, the app serves the public-domain WEB translation.
+Until that license exists, the app serves the freely-licensed **BSB** (via
+API.Bible) or the public-domain **WEB** — both legitimate, neither requiring
+NIV rights.
 
 ## Caching
 

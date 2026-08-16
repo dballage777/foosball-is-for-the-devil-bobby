@@ -9,38 +9,121 @@ import {
 /**
  * API.Bible provider (scripture.api.bible, American Bible Society).
  *
- * IMPORTANT LICENSING NOTE: an API key alone does NOT grant rights to the NIV.
- * The NIV is licensed by Biblica/Zondervan and must be enabled for your key,
- * with its own attribution and usage terms. See docs/bible-licensing.md. This
- * provider is only correct to use with a version id you are licensed to serve.
+ * Default target version is the **Berean Standard Bible (BSB)** — a modern,
+ * freely-licensed translation that reads close to the NIV in style but carries
+ * no license restriction. (The copyrighted NIV can only be served here if you
+ * are separately licensed for it; see docs/bible-licensing.md.)
  *
  * Configure via env:
  *   BIBLE_API_KEY             (required)
- *   BIBLE_DEFAULT_VERSION_ID  (the bible/version id to request)
+ *   BIBLE_VERSION_ABBR        (abbreviation to resolve, default "BSB")
+ *   BIBLE_DEFAULT_VERSION_ID  (optional: pin an exact bible id, skips lookup)
  */
 const BASE_URL = "https://api.scripture.api.bible/v1";
 
+export interface CatalogBible {
+  id: string;
+  abbreviation?: string;
+  abbreviationLocal?: string;
+  name?: string;
+}
+
+/**
+ * Pure selector: choose a bible id from the API.Bible catalog given either an
+ * exact id or a human abbreviation/name. Exported for unit testing so we never
+ * hard-code (and never fabricate) a specific version id.
+ */
+export function selectBibleId(
+  catalog: CatalogBible[],
+  target: { id?: string; abbr?: string },
+): string | null {
+  if (target.id) {
+    const byId = catalog.find((b) => b.id === target.id);
+    if (byId) return byId.id;
+    // If an explicit id was given but not in the catalog, trust it anyway.
+    return target.id;
+  }
+  const abbr = (target.abbr ?? "").trim().toLowerCase();
+  if (!abbr) return null;
+
+  // 1) exact abbreviation match (English or local)
+  const exact = catalog.find(
+    (b) =>
+      b.abbreviation?.toLowerCase() === abbr ||
+      b.abbreviationLocal?.toLowerCase() === abbr,
+  );
+  if (exact) return exact.id;
+
+  // 2) name contains the abbreviation as a whole word
+  const byName = catalog.find((b) => b.name?.toLowerCase().includes(abbr));
+  if (byName) return byName.id;
+
+  // 3) friendly alias for the default target
+  if (abbr === "bsb") {
+    const berean = catalog.find((b) =>
+      b.name?.toLowerCase().includes("berean standard"),
+    );
+    if (berean) return berean.id;
+  }
+  return null;
+}
+
 export function createApiBibleProvider(): BibleProvider {
   const apiKey = process.env.BIBLE_API_KEY;
-  const versionId = process.env.BIBLE_DEFAULT_VERSION_ID;
+  const abbr = process.env.BIBLE_VERSION_ABBR || "BSB";
+  const pinnedId = process.env.BIBLE_DEFAULT_VERSION_ID || undefined;
+
+  let resolvedId: string | null = pinnedId ?? null;
+  let resolvedLabel = pinnedId ?? abbr;
+
+  async function resolveVersionId(): Promise<string> {
+    if (resolvedId) return resolvedId;
+    if (!apiKey) {
+      throw new BibleProviderError(
+        "API.Bible is not configured. Set BIBLE_API_KEY.",
+        "not_configured",
+      );
+    }
+    let res: Response;
+    try {
+      res = await fetch(`${BASE_URL}/bibles`, {
+        headers: { "api-key": apiKey, Accept: "application/json" },
+        next: { revalidate: 60 * 60 * 24 },
+      });
+    } catch {
+      throw new BibleProviderError("Bible provider is unreachable.", "provider_unavailable");
+    }
+    if (res.status === 401 || res.status === 403) {
+      throw new BibleProviderError("API.Bible key was rejected.", "unauthorized");
+    }
+    if (!res.ok) {
+      throw new BibleProviderError(`Provider returned ${res.status}.`, "provider_unavailable");
+    }
+    const payload = (await res.json()) as { data?: CatalogBible[] };
+    const id = selectBibleId(payload.data ?? [], { abbr });
+    if (!id) {
+      throw new BibleProviderError(
+        `No "${abbr}" edition is available to this API.Bible key. Set BIBLE_DEFAULT_VERSION_ID to a licensed/available bible id.`,
+        "not_configured",
+      );
+    }
+    resolvedId = id;
+    const match = (payload.data ?? []).find((b) => b.id === id);
+    resolvedLabel = match?.abbreviation || abbr;
+    return id;
+  }
 
   return {
     info(): BibleProviderInfo {
       return {
         id: "apibible",
-        versionLabel: versionId ? versionId : "unconfigured",
-        // We cannot assert "licensed" generically; depends on the version id.
-        licensed: Boolean(apiKey && versionId),
+        versionLabel: resolvedLabel,
+        // BSB is freely licensed; other editions depend on the key's rights.
+        licensed: Boolean(apiKey),
       };
     },
 
     async getChapter(bookSlug: string, chapter: number): Promise<Chapter> {
-      if (!apiKey || !versionId) {
-        throw new BibleProviderError(
-          "API.Bible is not configured. Set BIBLE_API_KEY and BIBLE_DEFAULT_VERSION_ID.",
-          "not_configured",
-        );
-      }
       const book = getBook(bookSlug);
       if (!book) {
         throw new BibleProviderError(`Unknown book: ${bookSlug}`, "not_found");
@@ -52,11 +135,11 @@ export function createApiBibleProvider(): BibleProvider {
         );
       }
 
+      const versionId = await resolveVersionId();
+
       // API.Bible chapter id format is "<OSIS>.<chapter>", e.g. "JHN.3".
       const chapterId = `${book.osis}.${chapter}`;
-      const url = new URL(
-        `${BASE_URL}/bibles/${versionId}/chapters/${chapterId}`,
-      );
+      const url = new URL(`${BASE_URL}/bibles/${versionId}/chapters/${chapterId}`);
       url.searchParams.set("content-type", "json");
       url.searchParams.set("include-verse-numbers", "true");
       url.searchParams.set("include-notes", "false");
@@ -65,14 +148,11 @@ export function createApiBibleProvider(): BibleProvider {
       let res: Response;
       try {
         res = await fetch(url.toString(), {
-          headers: { "api-key": apiKey, Accept: "application/json" },
+          headers: { "api-key": apiKey!, Accept: "application/json" },
           next: { revalidate: 60 * 60 },
         });
       } catch {
-        throw new BibleProviderError(
-          "Bible provider is unreachable.",
-          "provider_unavailable",
-        );
+        throw new BibleProviderError("Bible provider is unreachable.", "provider_unavailable");
       }
 
       if (res.status === 401 || res.status === 403) {
@@ -85,10 +165,7 @@ export function createApiBibleProvider(): BibleProvider {
         throw new BibleProviderError("Chapter not found.", "not_found");
       }
       if (!res.ok) {
-        throw new BibleProviderError(
-          `Provider returned ${res.status}.`,
-          "provider_unavailable",
-        );
+        throw new BibleProviderError(`Provider returned ${res.status}.`, "provider_unavailable");
       }
 
       const payload = (await res.json()) as {
@@ -103,10 +180,10 @@ export function createApiBibleProvider(): BibleProvider {
         bookSlug,
         bookName: book.name,
         chapter,
-        versionLabel: versionId,
+        versionLabel: resolvedLabel,
         copyright:
           payload.data?.copyright?.trim() ||
-          "Text provided under license via API.Bible. See publisher attribution terms.",
+          "Provided via API.Bible. Honor the publisher's attribution terms.",
         verses,
       };
     },
@@ -129,7 +206,7 @@ function parseApiBibleContent(content: unknown): { number: number; text: string 
       if (Number.isFinite(num)) current = num;
     }
     if (n.type === "text" && typeof n.text === "string" && current > 0) {
-      byVerse.set(current, ((byVerse.get(current) ?? "") + n.text));
+      byVerse.set(current, (byVerse.get(current) ?? "") + n.text);
     }
     const items = n.items;
     if (Array.isArray(items)) items.forEach(walk);

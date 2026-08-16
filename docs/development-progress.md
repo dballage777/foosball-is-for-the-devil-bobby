@@ -12,7 +12,7 @@ Live status of the phased build. Updated as work lands.
 | 3 | Dev environment (Next.js/TS/Tailwind, scripts) | ✅ Complete |
 | 4 | Database architecture (schema + RLS) | ✅ Complete (migrations 0001–0005) |
 | 5 | Authentication & accounts | ✅ Sign up/in/out, profile; recovery flows TODO |
-| 6 | Bible provider abstraction | ✅ Public-domain + API.Bible providers |
+| 6 | Bible provider abstraction | ✅ Default BSB (freely-licensed, NIV-style) via API.Bible with catalog abbreviation resolution; auto-fallback to public-domain WEB |
 | 7 | Bible reader | ✅ Book/chapter nav, prev/next, reader, SEO |
 | 8 | Chapter audio integration | ◻️ Architecture + UI done; verified mappings pending |
 | 9 | Personal highlights & notes | ✅ In-reader highlight (6 colors), notes (private/study/public, edit/delete), bookmarks, copy reference |

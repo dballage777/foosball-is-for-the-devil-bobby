@@ -74,8 +74,10 @@ reader is the center; studies surround it; apologetics is a research layer.
 - Repo audit, architecture, and full docs set.
 - Next.js + Tailwind + Supabase scaffold; middleware session refresh.
 - Full Postgres schema + RLS for all domains (personal, studies, apologetics, audio).
-- Bible provider abstraction (public-domain WEB + API.Bible) and working reader
-  with book/chapter navigation, prev/next, SEO metadata.
+- Bible provider abstraction: default Berean Standard Bible (BSB — freely
+  licensed, NIV-style) via API.Bible, auto-fallback to public-domain WEB; a
+  licensed NIV plugs in with no UI changes. Working reader with book/chapter
+  navigation, prev/next, SEO metadata.
 - Auth (sign up / in / out), My Study (read), collaborative studies (create,
   invite, join via token, discussion, applications, leave).
 - Apologetics section (16 categories, topics, Case-for-Christianity pathway) and
