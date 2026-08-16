@@ -1,21 +1,49 @@
-# Python
-__pycache__/
-*.py[cod]
-*.egg-info/
-.venv/
-venv/
-.ipynb_checkpoints/
-.pytest_cache/
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
 
-# Large raw/intermediate data (reproducible via the ingestion pipeline)
-data/raw/*.parquet
-data/raw/*.csv
-data/processed/*.parquet
-features/*.parquet
-models/*.joblib
+# Next.js
+/.next/
+/out/
+next-env.d.ts
 
-# Keep directory placeholders
-!**/.gitkeep
+# Production build
+/build
 
-# OS
+# Environment (never commit real secrets)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+/coverage
+.vitest
+
+# Editor / OS
 .DS_Store
+*.pem
+*.log
+npm-debug.log*
+.vscode/
+.idea/
+
+# Supabase local
+supabase/.branches
+supabase/.temp
+
+# ---- Legacy NFL engine (Python) ----
+legacy/**/__pycache__/
+legacy/**/*.py[cod]
+legacy/**/.venv/
+legacy/**/venv/
+legacy/**/.ipynb_checkpoints/
+legacy/**/.pytest_cache/
+legacy/**/data/raw/*.parquet
+legacy/**/data/raw/*.csv
+legacy/**/data/processed/*.parquet
+legacy/**/features/*.parquet
+legacy/**/models/*.joblib
+!**/.gitkeep

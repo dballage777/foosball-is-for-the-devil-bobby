@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Semantic color tokens — light is the base; dark overrides below. */
+:root {
+  --color-ink: 30 41 59; /* slate-800 */
+  --color-parchment: 250 249 246;
+  --color-surface: 255 255 255;
+  --color-brand: 30 58 95; /* deep scholarly navy */
+  --color-brand-soft: 224 231 245;
+  --color-accent: 176 137 68; /* muted gold */
+  --color-muted: 100 116 139;
+  --color-line: 226 232 240;
+
+  /* Highlight colors (kept legible on parchment). */
+  --hl-yellow: 254 240 138;
+  --hl-green: 187 247 208;
+  --hl-blue: 191 219 254;
+  --hl-red: 254 202 202;
+  --hl-purple: 233 213 255;
+  --hl-orange: 254 215 170;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-ink: 226 232 240;
+    --color-parchment: 17 24 39;
+    --color-surface: 30 41 59;
+    --color-brand: 147 197 253;
+    --color-brand-soft: 30 58 95;
+    --color-accent: 202 168 106;
+    --color-muted: 148 163 184;
+    --color-line: 51 65 85;
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-ink: 226 232 240;
+  --color-parchment: 17 24 39;
+  --color-surface: 30 41 59;
+  --color-brand: 147 197 253;
+  --color-brand-soft: 30 58 95;
+  --color-accent: 202 168 106;
+  --color-muted: 148 163 184;
+  --color-line: 51 65 85;
+}
+
+body {
+  background-color: rgb(var(--color-parchment));
+  color: rgb(var(--color-ink));
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Comfortable long-form scripture reading. */
+.scripture {
+  font-family: Georgia, Cambria, "Times New Roman", serif;
+  font-size: 1.15rem;
+  line-height: 1.9;
+}
+
+.hl-yellow { background-color: rgb(var(--hl-yellow)); }
+.hl-green { background-color: rgb(var(--hl-green)); }
+.hl-blue { background-color: rgb(var(--hl-blue)); }
+.hl-red { background-color: rgb(var(--hl-red)); }
+.hl-purple { background-color: rgb(var(--hl-purple)); }
+.hl-orange { background-color: rgb(var(--hl-orange)); }
+
+/* Visible keyboard focus everywhere. */
+:focus-visible {
+  outline: 2px solid rgb(var(--color-accent));
+  outline-offset: 2px;
+}
