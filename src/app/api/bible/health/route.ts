@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getBibleProvider } from "@/lib/bible/service";
 import { BibleProviderError } from "@/lib/bible/types";
+import { API_BIBLE_BASE } from "@/lib/bible/providers/api-bible";
 
 // Always run fresh — this is a live check against the configured provider.
 export const dynamic = "force-dynamic";
 
-const API_BASE = "https://api.scripture.api.bible/v1";
+const API_BASE = API_BIBLE_BASE;
 
 /**
  * GET /api/bible/health

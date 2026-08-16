@@ -18,8 +18,14 @@ import {
  *   BIBLE_API_KEY             (required)
  *   BIBLE_VERSION_ABBR        (abbreviation to resolve, default "BSB")
  *   BIBLE_DEFAULT_VERSION_ID  (optional: pin an exact bible id, skips lookup)
+ *   BIBLE_API_BASE            (optional: override the API base URL)
+ *
+ * Both "https://rest.api.bible/v1" (shown on newer dashboards) and
+ * "https://api.scripture.api.bible/v1" are valid and interchangeable.
  */
-const BASE_URL = "https://api.scripture.api.bible/v1";
+export const API_BIBLE_BASE =
+  process.env.BIBLE_API_BASE || "https://rest.api.bible/v1";
+const BASE_URL = API_BIBLE_BASE;
 
 export interface CatalogBible {
   id: string;
