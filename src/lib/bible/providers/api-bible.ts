@@ -7,17 +7,19 @@ import {
 } from "@/lib/bible/types";
 
 /**
- * API.Bible provider (scripture.api.bible, American Bible Society).
+ * API.Bible provider (scripture.api.bible / rest.api.bible, American Bible
+ * Society — an OFFICIAL, licensed Scripture distributor).
  *
- * Default target version is the **Berean Standard Bible (BSB)** — a modern,
- * freely-licensed translation that reads close to the NIV in style but carries
- * no license restriction. (The copyrighted NIV can only be served here if you
- * are separately licensed for it; see docs/bible-licensing.md.)
+ * The edition served depends on what your API key is licensed for. If your
+ * key/application is authorized for the NIV, serving it here (with the
+ * publisher's copyright notice displayed) is the sanctioned, licensed path —
+ * not a workaround. Otherwise use a freely-licensed edition such as the BSB.
+ * See docs/bible-licensing.md.
  *
  * Configure via env:
  *   BIBLE_API_KEY             (required)
- *   BIBLE_VERSION_ABBR        (abbreviation to resolve, default "BSB")
- *   BIBLE_DEFAULT_VERSION_ID  (optional: pin an exact bible id, skips lookup)
+ *   BIBLE_DEFAULT_VERSION_ID  (pin an exact bible id, e.g. your NIV id)
+ *   BIBLE_VERSION_ABBR        (abbreviation to auto-resolve if no id, default "BSB")
  *   BIBLE_API_BASE            (optional: override the API base URL)
  *
  * Both "https://rest.api.bible/v1" (shown on newer dashboards) and
@@ -46,13 +48,11 @@ export function selectBibleId(
   if (target.id) {
     const byId = catalog.find((b) => b.id === target.id);
     if (byId) return byId.id;
-    // If an explicit id was given but not in the catalog, trust it anyway.
-    return target.id;
+    return target.id; // trust an explicit id even if not in the catalog
   }
   const abbr = (target.abbr ?? "").trim().toLowerCase();
   if (!abbr) return null;
 
-  // 1) exact abbreviation match (English or local)
   const exact = catalog.find(
     (b) =>
       b.abbreviation?.toLowerCase() === abbr ||
@@ -60,11 +60,9 @@ export function selectBibleId(
   );
   if (exact) return exact.id;
 
-  // 2) name contains the abbreviation as a whole word
   const byName = catalog.find((b) => b.name?.toLowerCase().includes(abbr));
   if (byName) return byName.id;
 
-  // 3) friendly alias for the default target
   if (abbr === "bsb") {
     const berean = catalog.find((b) =>
       b.name?.toLowerCase().includes("berean standard"),
@@ -79,21 +77,15 @@ export function createApiBibleProvider(): BibleProvider {
   const abbr = process.env.BIBLE_VERSION_ABBR || "BSB";
   const pinnedId = process.env.BIBLE_DEFAULT_VERSION_ID || undefined;
 
-  let resolvedId: string | null = pinnedId ?? null;
-  let resolvedLabel = pinnedId ?? abbr;
+  let resolvedId: string | null = null;
+  let resolvedLabel = pinnedId ? abbr : abbr;
+  let resolved = false;
 
-  async function resolveVersionId(): Promise<string> {
-    if (resolvedId) return resolvedId;
-    if (!apiKey) {
-      throw new BibleProviderError(
-        "API.Bible is not configured. Set BIBLE_API_KEY.",
-        "not_configured",
-      );
-    }
+  async function fetchJson<T>(path: string): Promise<T> {
     let res: Response;
     try {
-      res = await fetch(`${BASE_URL}/bibles`, {
-        headers: { "api-key": apiKey, Accept: "application/json" },
+      res = await fetch(`${BASE_URL}${path}`, {
+        headers: { "api-key": apiKey!, Accept: "application/json" },
         next: { revalidate: 60 * 60 * 24 },
       });
     } catch {
@@ -105,17 +97,48 @@ export function createApiBibleProvider(): BibleProvider {
     if (!res.ok) {
       throw new BibleProviderError(`Provider returned ${res.status}.`, "provider_unavailable");
     }
-    const payload = (await res.json()) as { data?: CatalogBible[] };
-    const id = selectBibleId(payload.data ?? [], { abbr });
+    return (await res.json()) as T;
+  }
+
+  /** Ensure we know both the bible id to fetch and a human-friendly label. */
+  async function ensureResolved(): Promise<string> {
+    if (resolved && resolvedId) return resolvedId;
+    if (!apiKey) {
+      throw new BibleProviderError(
+        "API.Bible is not configured. Set BIBLE_API_KEY.",
+        "not_configured",
+      );
+    }
+
+    if (pinnedId) {
+      resolvedId = pinnedId;
+      // Best-effort: fetch metadata so the reader shows e.g. "NIV11" not the id.
+      try {
+        const meta = await fetchJson<{ data?: CatalogBible }>(
+          `/bibles/${encodeURIComponent(pinnedId)}`,
+        );
+        resolvedLabel =
+          meta.data?.abbreviation || meta.data?.abbreviationLocal || abbr;
+      } catch {
+        resolvedLabel = abbr; // still serve the edition; just a plainer label
+      }
+      resolved = true;
+      return resolvedId;
+    }
+
+    // No pinned id: resolve by abbreviation from the catalog.
+    const catalog = await fetchJson<{ data?: CatalogBible[] }>("/bibles");
+    const id = selectBibleId(catalog.data ?? [], { abbr });
     if (!id) {
       throw new BibleProviderError(
-        `No "${abbr}" edition is available to this API.Bible key. Set BIBLE_DEFAULT_VERSION_ID to a licensed/available bible id.`,
+        `No "${abbr}" edition is available to this API.Bible key. Set BIBLE_DEFAULT_VERSION_ID to an available bible id.`,
         "not_configured",
       );
     }
     resolvedId = id;
-    const match = (payload.data ?? []).find((b) => b.id === id);
+    const match = (catalog.data ?? []).find((b) => b.id === id);
     resolvedLabel = match?.abbreviation || abbr;
+    resolved = true;
     return id;
   }
 
@@ -124,7 +147,6 @@ export function createApiBibleProvider(): BibleProvider {
       return {
         id: "apibible",
         versionLabel: resolvedLabel,
-        // BSB is freely licensed; other editions depend on the key's rights.
         licensed: Boolean(apiKey),
       };
     },
@@ -141,7 +163,7 @@ export function createApiBibleProvider(): BibleProvider {
         );
       }
 
-      const versionId = await resolveVersionId();
+      const versionId = await ensureResolved();
 
       // API.Bible chapter id format is "<OSIS>.<chapter>", e.g. "JHN.3".
       const chapterId = `${book.osis}.${chapter}`;
