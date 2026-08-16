@@ -6,9 +6,14 @@ Taxonomy lives in `src/lib/apologetics/content.ts` (UI) and
 
 Legend: ✅ done · ◻️ summary only (needs deeper article/resources)
 
+Every topic now has original explanatory **body prose** (multi-paragraph),
+verified by a unit test. Resurrection objections and Common Objections use a
+fair "objection → strongest form → response" structure. Verified external
+resources per topic are still being added under the research procedure.
+
 ## Categories (16)
 
-| # | Category | Summary prose | Topics seeded | Verified resources |
+| # | Category | Body prose | Topics | Verified resources |
 |---|---|---|---|---|
 | 1 | Does God Exist? | ✅ | 4 | ◻️ |
 | 2 | Origin of the Universe | ✅ | 2 | ◻️ |
@@ -24,7 +29,7 @@ Legend: ✅ done · ◻️ summary only (needs deeper article/resources)
 | 12 | Christianity & Science | ✅ | 1 | ◻️ |
 | 13 | Miracles | ✅ | 1 | ◻️ |
 | 14 | Evil & Suffering | ✅ | 2 | ◻️ |
-| 15 | Worldviews | ✅ | 1 | ◻️ |
+| 15 | Worldviews | ✅ + comparison table | 1 | ◻️ |
 | 16 | Common Objections | ✅ | 3 | ◻️ |
 
 ## Featured pathway — "The Case for Christianity"
