@@ -15,9 +15,9 @@ Live status of the phased build. Updated as work lands.
 | 6 | Bible provider abstraction | ✅ Public-domain + API.Bible providers |
 | 7 | Bible reader | ✅ Book/chapter nav, prev/next, reader, SEO |
 | 8 | Chapter audio integration | ◻️ Architecture + UI done; verified mappings pending |
-| 9 | Personal highlights & notes | ◻️ DB + read views done; in-reader write UI pending |
+| 9 | Personal highlights & notes | ✅ In-reader highlight (6 colors), notes (private/study/public, edit/delete), bookmarks, copy reference |
 | 10 | Bible study groups | ✅ Create/join/leave, members, invite tokens |
-| 11 | Group sharing/discussion/application | ✅ Discussion, "stood out", applications; share-from-reader pending |
+| 11 | Group sharing/discussion/application | ✅ Discussion, "stood out", applications, and share-highlight-from-reader |
 | 12 | Apologetics architecture | ✅ Taxonomy, pages, pathway |
 | 13 | Apologetics research/import | ◻️ Verified sources seeded; deeper resources ongoing |
 | 14 | Apologetics UI/search/filtering | ✅ Library page with filters (DB + fallback) |
@@ -35,14 +35,18 @@ Live status of the phased build. Updated as work lands.
 - `npm run build` — succeeds, 31 routes
 
 ## Known issues / next up
-1. Wire verse-level highlight/note **write** controls into the reader
-   (client component + server actions; DB + RLS already support it).
-2. Add "Share with study" from the reader (writes `shared_annotations`).
-3. Reading-history recording on chapter view.
-4. Expand apologetics resources (verified) and worldview comparison data.
-5. Password reset / email verification UX.
-6. Automated RLS integration tests and E2E happy-path.
-7. Device/accessibility QA passes (Phases 17–18) and final audit (Phase 20).
+1. Expand apologetics resources (verified) and worldview comparison data.
+2. Password reset / email verification UX.
+3. Automated RLS integration tests and E2E happy-path.
+4. Device/accessibility QA passes (Phases 17–18) and final audit (Phase 20).
+5. Optional: filter/manage highlights by color on My Study; note reply threads.
+
+## Recently completed
+- Verse-level interactive study tools in the reader: multi-verse selection,
+  highlight in 6 colors, private/study/public notes (create/edit/delete),
+  bookmarks (toggle), copy reference, and "Share with study" (writes
+  `shared_annotations`). Reading history is recorded on chapter view for
+  signed-in users. All writes go through validated server actions and RLS.
 
 ## Not doing (by policy / dependency)
 - Serving the NIV until a real license is configured (see `bible-licensing.md`).

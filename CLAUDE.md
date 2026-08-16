@@ -82,8 +82,7 @@ reader is the center; studies surround it; apologetics is a research layer.
   resource library with verified official sources.
 
 ## Known issues / not yet done
-- Verse-level interactive highlight/note UI (write path) is scaffolded in the DB
-  but the in-reader controls are not yet wired.
 - Apologetics resource library needs deeper verified content (research doc).
 - No E2E tests yet; RLS has unit-level reasoning but not automated integration tests.
+- Password reset / email verification UX not yet built.
 - NIV requires a real license before it can be served.

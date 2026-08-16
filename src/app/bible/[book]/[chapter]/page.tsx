@@ -5,8 +5,10 @@ import { adjacentChapter, getBook, isValidReference } from "@/lib/bible/books";
 import { getBibleProvider } from "@/lib/bible/service";
 import { BibleProviderError } from "@/lib/bible/types";
 import { getChapterAudio, getRelatedApologetics } from "@/lib/data/reader";
+import { getChapterAnnotations } from "@/lib/data/annotations";
 import { ChapterNav } from "@/components/chapter-nav";
 import { AudioPanel } from "@/components/audio-panel";
+import { ReaderVerses } from "@/components/reader-verses";
 
 interface Params {
   params: { book: string; chapter: string };
@@ -33,9 +35,10 @@ export default async function ChapterReader({ params }: Params) {
   const prev = adjacentChapter(book.slug, chapter, "prev");
   const next = adjacentChapter(book.slug, chapter, "next");
 
-  const [audio, related] = await Promise.all([
+  const [audio, related, annotations] = await Promise.all([
     getChapterAudio(book.slug, chapter),
     getRelatedApologetics(book.slug, chapter),
+    getChapterAnnotations(book.slug, chapter),
   ]);
 
   let content: React.ReactNode;
@@ -43,21 +46,15 @@ export default async function ChapterReader({ params }: Params) {
     const provider = getBibleProvider();
     const data = await provider.getChapter(book.slug, chapter);
     content = (
-      <>
-        <ol className="scripture mt-6 space-y-1">
-          {data.verses.map((v) => (
-            <li key={v.number} id={`v${v.number}`} className="group">
-              <sup className="mr-1 align-super text-xs font-semibold text-accent">
-                {v.number}
-              </sup>
-              <span>{v.text}</span>
-            </li>
-          ))}
-        </ol>
-        <p className="mt-8 border-t border-line pt-3 text-xs text-muted">
-          {data.versionLabel} · {data.copyright}
-        </p>
-      </>
+      <ReaderVerses
+        bookSlug={book.slug}
+        bookName={book.name}
+        chapter={chapter}
+        versionLabel={data.versionLabel}
+        copyright={data.copyright}
+        verses={data.verses}
+        annotations={annotations}
+      />
     );
   } catch (err) {
     content = <ProviderError error={err} />;
