@@ -80,6 +80,11 @@ async function identifyEdition(id: string) {
       data?: { id: string; name?: string; abbreviation?: string; abbreviationLocal?: string; copyright?: string };
     };
     const b = data.data;
+
+    // Also test CHAPTER TEXT access (metadata access does not guarantee text
+    // access on some licensed editions/plans). Fetch John 1 for this id.
+    const chapterProbe = await probeChapterAccess(id, key);
+
     return NextResponse.json({
       ok: true,
       id: b?.id ?? id,
@@ -87,9 +92,46 @@ async function identifyEdition(id: string) {
       abbreviation: b?.abbreviation ?? b?.abbreviationLocal ?? null,
       copyright: b?.copyright ?? null,
       isBerean: /berean/i.test(b?.name ?? "") || /bsb/i.test(b?.abbreviation ?? ""),
-      pinHint: `To use this edition, set BIBLE_DEFAULT_VERSION_ID="${b?.id ?? id}" in .env.local`,
+      chapterTextAccess: chapterProbe,
+      pinHint: `To use this edition, set BIBLE_DEFAULT_VERSION_ID="${b?.id ?? id}"`,
     });
   } catch {
     return NextResponse.json({ ok: false, id, error: "provider_unavailable" });
+  }
+}
+
+/**
+ * Probe whether the key can actually retrieve CHAPTER TEXT for an edition
+ * (John 1). Some licensed editions/plans expose metadata but restrict text.
+ */
+async function probeChapterAccess(id: string, key: string) {
+  try {
+    const url = new URL(`${API_BASE}/bibles/${encodeURIComponent(id)}/chapters/JHN.1`);
+    url.searchParams.set("content-type", "json");
+    url.searchParams.set("include-verse-numbers", "true");
+    const res = await fetch(url.toString(), {
+      headers: { "api-key": key, Accept: "application/json" },
+      cache: "no-store",
+    });
+    if (!res.ok) {
+      return {
+        ok: false,
+        status: res.status,
+        reason:
+          res.status === 401 || res.status === 403
+            ? "Key can read this edition's metadata but is not authorized for its chapter TEXT (may require a different plan/approval)."
+            : `Chapter request returned ${res.status}.`,
+      };
+    }
+    const body = (await res.json()) as { data?: { content?: unknown } };
+    const hasContent = Boolean(
+      body.data?.content &&
+        (Array.isArray(body.data.content)
+          ? body.data.content.length > 0
+          : true),
+    );
+    return { ok: hasContent, status: 200 };
+  } catch {
+    return { ok: false, status: 0, reason: "Chapter request failed to connect." };
   }
 }
