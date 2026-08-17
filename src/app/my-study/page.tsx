@@ -28,7 +28,7 @@ export default async function MyStudyPage() {
 
 async function Content() {
   const supabase = createClient();
-  const [{ data: history }, { data: highlights }, { data: notes }] =
+  const [{ data: history }, { data: highlights }, { data: notes }, { data: bookmarks }] =
     await Promise.all([
       supabase
         .from("reading_history")
@@ -44,6 +44,11 @@ async function Content() {
         .from("bible_notes")
         .select("id, book_slug, chapter, verse_start, body, visibility")
         .order("updated_at", { ascending: false })
+        .limit(20),
+      supabase
+        .from("bookmarks")
+        .select("id, book_slug, chapter, verse, label")
+        .order("created_at", { ascending: false })
         .limit(20),
     ]);
 
@@ -85,6 +90,29 @@ async function Content() {
           </ul>
         ) : (
           <Empty>Chapters you read will appear here.</Empty>
+        )}
+      </Section>
+
+      <Section title="Bookmarks">
+        {bookmarks && bookmarks.length > 0 ? (
+          <ul className="flex flex-wrap gap-2">
+            {bookmarks.map((b) => {
+              const book = getBook(b.book_slug);
+              return (
+                <li key={b.id}>
+                  <Link
+                    href={`/bible/${b.book_slug}/${b.chapter}${b.verse ? `#v${b.verse}` : ""}`}
+                    className="rounded-md border border-line bg-surface px-3 py-1.5 text-sm hover:bg-brand-soft"
+                  >
+                    🔖 {book?.name} {b.chapter}
+                    {b.verse ? `:${b.verse}` : ""}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <Empty>Bookmark a verse or chapter in the reader to save it here.</Empty>
         )}
       </Section>
 

@@ -35,13 +35,22 @@ Live status of the phased build. Updated as work lands.
 - `npm run build` — succeeds, 31 routes
 
 ## Known issues / next up
-1. Expand apologetics resources (verified) and worldview comparison data.
-2. Password reset / email verification UX.
-3. Automated RLS integration tests and E2E happy-path.
-4. Device/accessibility QA passes (Phases 17–18) and final audit (Phase 20).
-5. Optional: filter/manage highlights by color on My Study; note reply threads.
+1. Automated RLS integration tests and E2E happy-path.
+2. Device/accessibility QA passes (Phases 17–18) and final audit (Phase 20).
+3. Email sender (SMTP) configuration so password-reset/confirmation emails send
+   in production (flow is built; needs a configured provider).
+4. Optional: filter/manage highlights by color; note reply threads; source
+   filter on the resource library.
 
 ## Recently completed
+- Deployed live (Vercel) serving the licensed NIV via API.Bible, with Supabase
+  wired for accounts, personal study, and collaborative studies.
+- Added verified official resources (Reasonable Faith, Stand to Reason,
+  GotQuestions, Reasons to Believe) mapped to topics (migration 0006); wired
+  end-to-end topic filtering on the resource library.
+- Password reset flow: request page, `/auth/callback` PKCE exchange, and
+  set-new-password page (works once an email sender is configured).
+- Bookmarks now shown in My Study.
 - Verse-level interactive study tools in the reader: multi-verse selection,
   highlight in 6 colors, private/study/public notes (create/edit/delete),
   bookmarks (toggle), copy reference, and "Share with study" (writes

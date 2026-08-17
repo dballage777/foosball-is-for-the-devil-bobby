@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { isSupabaseConfigured } from "@/lib/config";
 import { createClient } from "@/lib/supabase/server";
@@ -18,7 +19,32 @@ interface ResourceRow extends VerifiedResource {
   featured?: boolean;
 }
 
-async function loadResources(query: string, type: string): Promise<ResourceRow[]> {
+/** Resolve the resource ids linked to a topic slug, plus the topic's title. */
+async function resolveTopic(
+  supabase: ReturnType<typeof createClient>,
+  topicSlug: string,
+): Promise<{ title: string | null; resourceIds: string[] }> {
+  const { data: topic } = await supabase
+    .from("apologetics_topics")
+    .select("id, title")
+    .eq("slug", topicSlug)
+    .maybeSingle();
+  if (!topic) return { title: null, resourceIds: [] };
+  const { data: links } = await supabase
+    .from("resource_topics")
+    .select("resource_id")
+    .eq("topic_id", (topic as { id: string }).id);
+  return {
+    title: (topic as { title: string }).title,
+    resourceIds: (links ?? []).map((l) => (l as { resource_id: string }).resource_id),
+  };
+}
+
+async function loadResources(
+  query: string,
+  type: string,
+  topicResourceIds: string[] | null,
+): Promise<ResourceRow[]> {
   if (!isSupabaseConfigured()) {
     return VERIFIED_SOURCES.filter(
       (r) =>
@@ -31,12 +57,13 @@ async function loadResources(query: string, type: string): Promise<ResourceRow[]
     let q = supabase
       .from("apologetics_resources")
       .select(
-        "title, description, resource_type, url, featured, apologetics_sources(name)",
+        "id, title, description, resource_type, url, featured, apologetics_sources(name)",
       )
       .order("featured", { ascending: false })
       .limit(60);
     if (type) q = q.eq("resource_type", type);
     if (query) q = q.ilike("title", `%${query}%`);
+    if (topicResourceIds) q = q.in("id", topicResourceIds.length ? topicResourceIds : ["none"]);
     const { data } = await q;
     if (!data) return [];
     return (data as unknown[]).map((row) => {
@@ -69,7 +96,17 @@ export default async function ResourcesPage({
 }) {
   const query = searchParams.q ?? "";
   const type = searchParams.type ?? "";
-  const resources = await loadResources(query, type);
+  const topicSlug = searchParams.topic ?? "";
+
+  let topicTitle: string | null = null;
+  let topicResourceIds: string[] | null = null;
+  if (topicSlug && isSupabaseConfigured()) {
+    const resolved = await resolveTopic(createClient(), topicSlug);
+    topicTitle = resolved.title;
+    topicResourceIds = resolved.resourceIds;
+  }
+
+  const resources = await loadResources(query, type, topicResourceIds);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -82,8 +119,26 @@ export default async function ResourcesPage({
         re-hosted.
       </p>
 
+      {topicSlug && (
+        <div className="mt-4 flex flex-wrap items-center gap-2 rounded-md border border-accent/40 bg-brand-soft/40 px-3 py-2 text-sm">
+          <span className="text-muted">Filtered to topic:</span>
+          <span className="font-medium text-brand">
+            {topicTitle ?? topicSlug}
+          </span>
+          <Link href="/resources" className="ml-2 text-accent hover:underline">
+            Clear
+          </Link>
+          {!isSupabaseConfigured() && (
+            <span className="text-muted">
+              (topic filtering activates once the database is configured)
+            </span>
+          )}
+        </div>
+      )}
+
       {/* Filters (GET form — works without JS) */}
       <form className="mt-6 flex flex-wrap items-end gap-3" method="get">
+        {topicSlug && <input type="hidden" name="topic" value={topicSlug} />}
         <label className="flex flex-col text-sm">
           <span className="mb-1 font-medium">Search</span>
           <input

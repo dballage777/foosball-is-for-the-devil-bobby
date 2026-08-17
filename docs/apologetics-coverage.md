@@ -39,8 +39,13 @@ resources per topic are still being added under the research procedure.
 
 ## Resource library
 
-- 7 verified official source entries seeded (see `apologetics-research.md`).
-- Deeper per-topic resources are added only after URL verification.
+- Verified official sources seeded across 7 ministries: Cold-Case Christianity,
+  Cross Examined, John Lennox, Reasonable Faith, Stand to Reason, GotQuestions,
+  Reasons to Believe (migrations 0005 + 0006).
+- Resources are mapped to topics via `resource_topics`; the `/resources` page
+  supports search, type filter, and **topic** filter (deep-linked from each
+  apologetics topic).
+- Deeper per-topic resources continue to be added only after URL verification.
 
 ## Bible ↔ Apologetics links (curated, non-arbitrary)
 

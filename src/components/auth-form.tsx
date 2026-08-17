@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
@@ -128,6 +129,15 @@ export function AuthForm({ configured }: { configured: boolean }) {
       >
         {busy ? "Please wait…" : mode === "sign-in" ? "Sign in" : "Create account"}
       </button>
+
+      {mode === "sign-in" && (
+        <Link
+          href="/account/reset"
+          className="block text-center text-sm text-accent hover:underline"
+        >
+          Forgot password?
+        </Link>
+      )}
     </form>
   );
 }
