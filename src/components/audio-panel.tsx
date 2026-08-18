@@ -1,5 +1,5 @@
 import type { AudioResource } from "@/lib/data/reader";
-import { LISTENERS_COMMENTARY, browseBookUrl } from "@/lib/audio/listeners-commentary";
+import { LISTENERS_COMMENTARY, episodeListUrl } from "@/lib/audio/listeners-commentary";
 
 /**
  * Chapter audio. Shows verified chapter/range-specific mappings (official embed
@@ -8,13 +8,15 @@ import { LISTENERS_COMMENTARY, browseBookUrl } from "@/lib/audio/listeners-comme
  * re-host audio.
  */
 export function AudioPanel({
+  bookSlug,
   bookName,
   resources,
 }: {
+  bookSlug: string;
   bookName: string;
   resources: AudioResource[];
 }) {
-  const browseUrl = browseBookUrl(bookName);
+  const { url: browseUrl, exact } = episodeListUrl(bookSlug, bookName);
 
   return (
     <section className="mt-6 rounded-xl border border-line bg-surface p-4">
@@ -63,7 +65,9 @@ export function AudioPanel({
           rel="noopener noreferrer"
           className="font-medium text-accent hover:underline"
         >
-          Browse {bookName} episodes on {LISTENERS_COMMENTARY.name} →
+          {exact
+            ? `Listen to ${bookName} on ${LISTENERS_COMMENTARY.name} →`
+            : `Browse ${bookName} episodes on ${LISTENERS_COMMENTARY.name} →`}
         </a>
         <a
           href={LISTENERS_COMMENTARY.applePodcasts}
