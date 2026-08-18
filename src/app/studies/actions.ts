@@ -1,5 +1,6 @@
 "use server";
 
+import { randomUUID } from "node:crypto";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -42,27 +43,28 @@ export async function createStudy(formData: FormData) {
     throw new Error("Unknown book selected.");
   }
 
-  const { data, error } = await supabase
-    .from("bible_studies")
-    .insert({
-      owner_id: user.id,
-      name: v.name,
-      description: v.description || null,
-      book_slug: v.book_slug || null,
-      chapter: v.chapter ?? null,
-      passage_ref: v.passage_ref || null,
-      study_date: v.study_date || null,
-      recurring_schedule: v.recurring_schedule || null,
-      privacy: v.privacy,
-    })
-    .select("id")
-    .single();
+  // Generate the id up front so we don't need to read the row back through
+  // RLS immediately after insert (the owner's membership is added by a trigger,
+  // and relying on RETURNING there is a known Supabase RLS timing pitfall).
+  const id = randomUUID();
+  const { error } = await supabase.from("bible_studies").insert({
+    id,
+    owner_id: user.id,
+    name: v.name,
+    description: v.description || null,
+    book_slug: v.book_slug || null,
+    chapter: v.chapter ?? null,
+    passage_ref: v.passage_ref || null,
+    study_date: v.study_date || null,
+    recurring_schedule: v.recurring_schedule || null,
+    privacy: v.privacy,
+  });
 
-  if (error || !data) {
-    throw new Error("Could not create the study. Please try again.");
+  if (error) {
+    throw new Error(`Could not create the study: ${error.message}`);
   }
   revalidatePath("/studies");
-  redirect(`/studies/${data.id}`);
+  redirect(`/studies/${id}`);
 }
 
 export async function joinStudy(token: string) {

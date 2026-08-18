@@ -178,7 +178,11 @@ alter table study_applications enable row level security;
 drop policy if exists studies_select on bible_studies;
 create policy studies_select on bible_studies
   for select to authenticated
-  using (privacy = 'public' or is_study_member(id, auth.uid()));
+  using (
+    owner_id = auth.uid()
+    or privacy = 'public'
+    or is_study_member(id, auth.uid())
+  );
 drop policy if exists studies_insert on bible_studies;
 create policy studies_insert on bible_studies
   for insert to authenticated with check (owner_id = auth.uid());

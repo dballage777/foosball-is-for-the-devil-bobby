@@ -1,6 +1,6 @@
 -- =============================================================
 -- Berean — full database setup (run once in the Supabase SQL Editor).
--- This concatenates supabase/migrations/0001..0006 in order.
+-- Concatenates supabase/migrations/0001..0007 in order.
 -- Safe to re-run: all statements are idempotent.
 -- =============================================================
 
@@ -366,7 +366,11 @@ alter table study_applications enable row level security;
 drop policy if exists studies_select on bible_studies;
 create policy studies_select on bible_studies
   for select to authenticated
-  using (privacy = 'public' or is_study_member(id, auth.uid()));
+  using (
+    owner_id = auth.uid()
+    or privacy = 'public'
+    or is_study_member(id, auth.uid())
+  );
 drop policy if exists studies_insert on bible_studies;
 create policy studies_insert on bible_studies
   for insert to authenticated with check (owner_id = auth.uid());
@@ -888,4 +892,25 @@ from (values
 join apologetics_resources r on r.slug = m.resource_slug
 join apologetics_topics tp on tp.slug = m.topic_slug
 on conflict (resource_id, topic_id) do nothing;
+
+
+-- >>> migrations/0007_fix_studies_select.sql
+-- =====================================================================
+-- 0007_fix_studies_select.sql — Let a study's owner always read it.
+--
+-- The original studies_select policy relied on membership (added by an
+-- AFTER-INSERT trigger). Immediately after creating a study, reading the row
+-- back through RLS could fail due to trigger/visibility timing. Adding
+-- `owner_id = auth.uid()` makes the owner's own study always readable.
+-- Idempotent: safe to re-run.
+-- =====================================================================
+
+drop policy if exists studies_select on bible_studies;
+create policy studies_select on bible_studies
+  for select to authenticated
+  using (
+    owner_id = auth.uid()
+    or privacy = 'public'
+    or is_study_member(id, auth.uid())
+  );
 
