@@ -34,8 +34,40 @@ fabricates a player.
 4. Insert rows via trusted server tooling / SQL (the table is read-only to app
    users through RLS).
 
-## Status
+## What the reader shows today
 
-No audio mappings are seeded yet, because each mapping requires confirming the
-correct official URL and the provider's embedding terms. The architecture,
-table, and UI are complete and ready to receive verified mappings.
+Every chapter shows a **Chapter Audio** panel for *The Listener's Commentary*
+(John Whittaker):
+
+1. Any **verified chapter/range-specific** mappings from `audio_resources`
+   (official embed when terms allow, otherwise an official link).
+2. An always-available, **book-aware "Browse {Book} episodes"** link to the
+   official site, plus an Apple Podcasts link. Because episodes cover chapter
+   *ranges* (e.g. "Leviticus 1–3"), this book-level link is the reliable way to
+   reach the right episode until exact per-chapter mappings are entered.
+
+The book-browse base URL is `NEXT_PUBLIC_LC_SEARCH_BASE`
+(default `https://listenerscommentary.com/?s=`), overridable if the site's
+search URL changes.
+
+## Adding exact chapter/range mappings (verified only)
+
+When you have confirmed an episode's official page (and, if permitted, its embed
+URL), insert one row per chapter it covers. Example for an episode covering
+Leviticus 1–3:
+
+```sql
+insert into audio_resources (book_slug, chapter, title, provider, page_url, embed_url, description)
+values
+  ('leviticus', 1, 'Leviticus 1–3', 'The Listener''s Commentary',
+   'https://listenerscommentary.com/<verified-episode-slug>/', null, 'Verse-by-verse teaching'),
+  ('leviticus', 2, 'Leviticus 1–3', 'The Listener''s Commentary',
+   'https://listenerscommentary.com/<verified-episode-slug>/', null, null),
+  ('leviticus', 3, 'Leviticus 1–3', 'The Listener''s Commentary',
+   'https://listenerscommentary.com/<verified-episode-slug>/', null, null);
+```
+
+Only set `embed_url` if the platform (e.g. Podbean/Apple) offers an official
+embed and its terms permit embedding. Never set `audio_url` (that would imply
+re-hosting) unless you have explicit written authorization. Confirm each
+`page_url` resolves before inserting — do not add unverified URLs.

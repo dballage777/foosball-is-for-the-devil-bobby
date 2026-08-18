@@ -14,7 +14,7 @@ Live status of the phased build. Updated as work lands.
 | 5 | Authentication & accounts | ✅ Sign up/in/out, profile; recovery flows TODO |
 | 6 | Bible provider abstraction | ✅ Default BSB (freely-licensed, NIV-style) via API.Bible with catalog abbreviation resolution; auto-fallback to public-domain WEB |
 | 7 | Bible reader | ✅ Book/chapter nav, prev/next, reader, SEO |
-| 8 | Chapter audio integration | ◻️ Architecture + UI done; verified mappings pending |
+| 8 | Chapter audio integration | ✅ Reader shows a Listener's Commentary panel on every chapter (book-aware browse link + Apple Podcasts); `audio_resources` ready for verified per-chapter embeds/links |
 | 9 | Personal highlights & notes | ✅ In-reader highlight (6 colors), notes (private/study/public, edit/delete), bookmarks, copy reference |
 | 10 | Bible study groups | ✅ Create/join/leave, members, invite tokens |
 | 11 | Group sharing/discussion/application | ✅ Discussion, "stood out", applications, and share-highlight-from-reader |

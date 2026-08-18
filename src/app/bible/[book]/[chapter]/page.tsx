@@ -79,7 +79,7 @@ export default async function ChapterReader({ params }: Params) {
 
       <ChapterNav bookSlug={book.slug} prev={prev} next={next} />
 
-      {audio.length > 0 && <AudioPanel resources={audio} />}
+      <AudioPanel bookName={book.name} resources={audio} />
 
       {content}
 
