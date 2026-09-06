@@ -66,6 +66,14 @@ body {
 .hl-purple { background-color: rgb(var(--hl-purple)); }
 .hl-orange { background-color: rgb(var(--hl-orange)); }
 
+/* Highlight backgrounds are always light pastels, so highlighted text (and any
+   children, e.g. the verse number) must stay dark in BOTH themes to remain
+   readable — otherwise light-on-light in dark mode makes it invisible. */
+.hl-yellow, .hl-green, .hl-blue, .hl-red, .hl-purple, .hl-orange,
+.hl-yellow *, .hl-green *, .hl-blue *, .hl-red *, .hl-purple *, .hl-orange * {
+  color: #1e293b !important; /* slate-800 */
+}
+
 /* Visible keyboard focus everywhere. */
 :focus-visible {
   outline: 2px solid rgb(var(--color-accent));

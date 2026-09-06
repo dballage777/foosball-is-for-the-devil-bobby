@@ -8,6 +8,7 @@ const NAV = [
   { href: "/studies", label: "Bible Studies" },
   { href: "/apologetics", label: "Apologetics" },
   { href: "/resources", label: "Resources" },
+  { href: "/guide", label: "Guide" },
   { href: "/about", label: "About" },
 ];
 

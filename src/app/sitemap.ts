@@ -5,7 +5,7 @@ import { CATEGORIES } from "@/lib/apologetics/content";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = SITE.url;
-  const staticPages = ["", "/bible", "/apologetics", "/resources", "/about"].map(
+  const staticPages = ["", "/bible", "/apologetics", "/resources", "/guide", "/about"].map(
     (p) => ({ url: `${base}${p}`, changeFrequency: "weekly" as const, priority: 0.8 }),
   );
 
