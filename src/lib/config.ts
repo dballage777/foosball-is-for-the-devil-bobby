@@ -10,8 +10,27 @@ export function isSupabaseConfigured(): boolean {
   );
 }
 
+/**
+ * Normalize NEXT_PUBLIC_SITE_URL into a valid absolute URL. A value pasted
+ * without a protocol (e.g. "my-app.vercel.app") would otherwise crash
+ * `new URL(...)` in the root layout and take down every page.
+ */
+function normalizeSiteUrl(raw?: string): string {
+  const fallback = "http://localhost:3000";
+  const trimmed = raw?.trim();
+  if (!trimmed) return fallback;
+  const withProtocol = /^https?:\/\//i.test(trimmed)
+    ? trimmed
+    : `https://${trimmed}`;
+  try {
+    return new URL(withProtocol).origin;
+  } catch {
+    return fallback;
+  }
+}
+
 export const SITE = {
   name: "Berean",
   tagline: "Read Scripture. Study together. Examine the evidence.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  url: normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL),
 };
