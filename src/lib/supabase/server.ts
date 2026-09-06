@@ -36,9 +36,14 @@ export function createClient() {
  * validates the JWT with the auth server) rather than trusting the session.
  */
 export async function getCurrentUser() {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  return user;
+  try {
+    const supabase = createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    return user;
+  } catch {
+    // Supabase unreachable/paused — treat as signed-out rather than crashing.
+    return null;
+  }
 }

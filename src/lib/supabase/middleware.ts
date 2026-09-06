@@ -33,7 +33,13 @@ export async function updateSession(request: NextRequest) {
     },
   );
 
-  // Touch the user to trigger a refresh when needed.
-  await supabase.auth.getUser();
+  // Touch the user to trigger a refresh when needed. Never let an unreachable
+  // or paused Supabase project throw here — that would 500 every route. On
+  // failure we simply pass the request through (treated as signed-out).
+  try {
+    await supabase.auth.getUser();
+  } catch {
+    // ignore — auth session just won't refresh this request
+  }
   return response;
 }
