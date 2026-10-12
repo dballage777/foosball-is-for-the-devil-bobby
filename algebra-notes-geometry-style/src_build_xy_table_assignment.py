@@ -26,7 +26,7 @@ def xy_table():
     data=[[Paragraph("<u>X</u>",HDR),Paragraph("<u>Y</u>",HDR),Paragraph("<u>(x, y)</u>",HDR)]]
     for x in [-2,-1,0,1,2]:
         data.append([Paragraph(f"<b>{x}</b>",CEN),"",""])
-    t=Table(data, colWidths=[0.3*inch,0.95*inch,0.62*inch], rowHeights=[0.2*inch]+[0.26*inch]*5)
+    t=Table(data, colWidths=[0.32*inch,1.25*inch,0.68*inch], rowHeights=[0.2*inch]+[0.3*inch]*5)
     t.setStyle(TableStyle([('GRID',(0,0),(-1,-1),0.7,colors.black),
                            ('VALIGN',(0,0),(-1,-1),'MIDDLE'),
                            ('TOPPADDING',(0,0),(-1,-1),1),('BOTTOMPADDING',(0,0),(-1,-1),1),
@@ -34,7 +34,7 @@ def xy_table():
     return t
 
 def cell(i):
-    inner=Table([[xy_table(), grid_img(1.6)]], colWidths=[1.95*inch,1.7*inch])
+    inner=Table([[xy_table(), grid_img(1.45)]], colWidths=[2.25*inch,1.45*inch])
     inner.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'MIDDLE'),
                                ('LEFTPADDING',(0,0),(-1,-1),0),('RIGHTPADDING',(0,0),(-1,-1),0),
                                ('TOPPADDING',(0,0),(-1,-1),0),('BOTTOMPADDING',(0,0),(-1,-1),0)]))
