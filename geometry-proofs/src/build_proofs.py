@@ -2,7 +2,7 @@ import os, matplotlib
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 from reportlab.lib.styles import ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_LEFT
+from reportlab.lib.enums import TA_CENTER
 from reportlab.lib import colors
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Image, Spacer, PageBreak, KeepTogether
 from reportlab.pdfbase import pdfmetrics
@@ -14,7 +14,7 @@ pdfmetrics.registerFont(TTFont('DJ', os.path.join(TTF,'DejaVuSans.ttf')))
 pdfmetrics.registerFont(TTFont('DJB', os.path.join(TTF,'DejaVuSans-Bold.ttf')))
 
 OUT="Geometry_Triangle_Congruence_Proofs_Notes.pdf"
-cong="≅"; tri="△"; ang="∠"
+cong="≅"; tri="△"
 
 TITLE=ParagraphStyle("T",fontName='DJB',fontSize=15,leading=18,alignment=TA_CENTER)
 NAME =ParagraphStyle("N",fontName='DJ',fontSize=10.5,leading=14)
@@ -29,8 +29,7 @@ def diag(path,h_in):
 ROWH=0.42*inch; NROWS=6
 
 def problem(diagfile, given_prove, diag_h=1.5):
-    top=Table([[Paragraph(given_prove,GP), diag(diagfile,diag_h)]],
-              colWidths=[3.95*inch,3.45*inch])
+    top=Table([[Paragraph(given_prove,GP), diag(diagfile,diag_h)]], colWidths=[3.95*inch,3.45*inch])
     top.setStyle(TableStyle([('BOX',(0,0),(-1,-1),1.1,colors.black),
                              ('LINEAFTER',(0,0),(0,0),1.1,colors.black),
                              ('VALIGN',(0,0),(0,0),'TOP'),('VALIGN',(1,0),(1,0),'MIDDLE'),
@@ -39,18 +38,22 @@ def problem(diagfile, given_prove, diag_h=1.5):
                              ('TOPPADDING',(1,0),(1,0),3),('BOTTOMPADDING',(1,0),(1,0),3)]))
     data=[[Paragraph("Statement",HDR),Paragraph("Reason",HDR)]]
     for i in range(NROWS): data.append([Paragraph(f"{i+1}.",NUM),""])
-    proof=Table(data, colWidths=[4.55*inch,2.85*inch],
-                rowHeights=[0.3*inch]+[ROWH]*NROWS)
+    proof=Table(data, colWidths=[4.55*inch,2.85*inch], rowHeights=[0.3*inch]+[ROWH]*NROWS)
     proof.setStyle(TableStyle([('GRID',(0,0),(-1,-1),1.1,colors.black),
                                ('VALIGN',(0,0),(-1,-1),'TOP'),
                                ('LEFTPADDING',(0,1),(0,-1),6),('TOPPADDING',(0,1),(-1,-1),3),
                                ('VALIGN',(0,0),(-1,0),'MIDDLE')]))
     return KeepTogether([top,proof])
 
-P1=f"<b>Given:</b>  AB {cong} DC,   AC {cong} DB<br/><br/><b>Prove:</b>  {tri}ABC {cong} {tri}DCB"
-P2=f"<b>Given:</b>  WX {cong} YX,   Z is the midpoint of WY<br/><br/><b>Prove:</b>  {tri}WXZ {cong} {tri}YXZ"
-P3=f"<b>Given:</b>  QP {cong} QR,   QS bisects {ang}PQR<br/><br/><b>Prove:</b>  {tri}PQS {cong} {tri}RQS"
-P4=f"<b>Given:</b>  JL bisects KM,   KM bisects JL<br/><br/><b>Prove:</b>  {tri}JNK {cong} {tri}LNM"
+P1=(f"<b>Given:</b>  AB {cong} CB,   D is the midpoint of AC"
+    f"<br/><br/><b>Prove:</b>  {tri}ABD {cong} {tri}CBD")
+P2=(f"<b>Given:</b>  QP {cong} QR,   QS bisects PR"
+    f"<br/><br/><b>Prove:</b>  {tri}QPS {cong} {tri}QRS")
+P3=(f"<b>Given:</b>  K is the midpoint of EG,"
+    f"<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;K is the midpoint of FH"
+    f"<br/><br/><b>Prove:</b>  {tri}EKF {cong} {tri}GKH")
+P4=(f"<b>Given:</b>  WY bisects XZ,   XZ bisects WY"
+    f"<br/><br/><b>Prove:</b>  {tri}WPX {cong} {tri}YPZ")
 
 story=[]
 story.append(Paragraph("Triangle Congruence Proofs — SSS &amp; SAS", TITLE))
