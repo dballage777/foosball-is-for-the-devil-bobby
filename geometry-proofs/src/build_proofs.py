@@ -16,7 +16,7 @@ pdfmetrics.registerFont(TTFont('DJB', os.path.join(TTF,'DejaVuSans-Bold.ttf')))
 OUT="Geometry_Triangle_Congruence_Proofs_Notes.pdf"
 cong="≅"; tri="△"
 
-TITLE=ParagraphStyle("T",fontName='DJB',fontSize=15,leading=18,alignment=TA_CENTER)
+TITLE=ParagraphStyle("T",fontName='DJB',fontSize=13,leading=16,alignment=TA_CENTER)
 NAME =ParagraphStyle("N",fontName='DJ',fontSize=10.5,leading=14)
 GP   =ParagraphStyle("GP",fontName='DJ',fontSize=11.5,leading=20)
 HDR  =ParagraphStyle("H",fontName='DJB',fontSize=11,leading=13,alignment=TA_CENTER)
@@ -56,10 +56,8 @@ P4=(f"<b>Given:</b>  WY bisects XZ,   XZ bisects WY"
     f"<br/><br/><b>Prove:</b>  {tri}WPX {cong} {tri}YPZ")
 
 story=[]
-story.append(Paragraph("Triangle Congruence Proofs — SSS &amp; SAS", TITLE))
-story.append(Spacer(1,3))
-story.append(Paragraph("Name: ________________________________     Date: ______________     Period: ______", NAME))
-story.append(Spacer(1,8))
+story.append(Paragraph("<u>Geometry:  Unit 4 -- Lesson 2  SSS and SAS Triangle Congruence Part 2</u>", TITLE))
+story.append(Spacer(1,10))
 story.append(problem("diag1.png",P1)); story.append(Spacer(1,12))
 story.append(problem("diag2.png",P2))
 story.append(PageBreak())
