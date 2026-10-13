@@ -2,15 +2,18 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
-GRID="#BDBDBD"; LINE="#0E1C6B"; DOT="#C01515"   # darker/bolder line, red dots pop
-# type: 'lin'(m,b), 'vert'(x), 'horz'(y)  + two points
+GRID="#BDBDBD"; LINE="#0E1C6B"; DOT="#C01515"
 probs=[
- ('lin',(2/3,1),[(-3,-1),(0,1)]),    # 1  non-reducible   2/3
- ('lin',(-3/4,0.5),[(-2,2),(2,-1)]), # 2  non-reducible  -3/4
- ('lin',(0.5,0),[(-2,-1),(2,1)]),    # 3  reducible       2/4 -> 1/2
- ('lin',(2,0),[(-1,-2),(1,2)]),      # 4  whole number    4/2 -> 2
- ('vert',2,[(2,3),(2,-2)]),          # 5  vertical         undefined
- ('horz',-1,[(-3,-1),(2,-1)]),       # 6  horizontal       slope 0
+ ('lin',(2/3,1),[(-3,-1),(0,1)]),    # 1  2/3   non-reducible
+ ('lin',(-3/4,0.5),[(-2,2),(2,-1)]), # 2  -3/4  non-reducible
+ ('lin',(0.5,0),[(-2,-1),(2,1)]),    # 3  2/4 -> 1/2 reducible
+ ('lin',(2,0),[(-1,-2),(1,2)]),      # 4  4/2 -> 2  whole
+ ('lin',(3/5,1),[(-5,-2),(0,1)]),    # 5  3/5   non-reducible
+ ('lin',(-2/3,1),[(0,1),(3,-1)]),    # 6  -2/3  non-reducible
+ ('lin',(-2,1),[(-1,3),(2,-3)]),     # 7  -6/3 -> -2 whole
+ ('lin',(1.5,0),[(-2,-3),(2,3)]),    # 8  6/4 -> 3/2 reducible
+ ('vert',-2,[(-2,3),(-2,-2)]),       # 9  vertical  undefined
+ ('horz',2,[(-3,2),(1,2)]),          # 10 horizontal slope 0
 ]
 for idx,(typ,par,pts) in enumerate(probs,start=1):
     fig,ax=plt.subplots(figsize=(2.7,2.7),dpi=220)
@@ -35,4 +38,4 @@ for idx,(typ,par,pts) in enumerate(probs,start=1):
         ax.scatter([px],[py],color=DOT,s=42,zorder=5,edgecolors="white",linewidths=0.8)
     ax.set_xlim(-6.2,6.2); ax.set_ylim(-6.2,6.2); ax.set_aspect("equal"); ax.axis("off")
     plt.savefig(f"slope_{idx}.png",bbox_inches="tight",pad_inches=0.03); plt.close()
-print("6 grids done")
+print("10 slope grids done")
