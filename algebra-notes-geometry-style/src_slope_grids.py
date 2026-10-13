@@ -5,12 +5,12 @@ import numpy as np
 GRID="#BDBDBD"; LINE="#0E1C6B"; DOT="#C01515"   # darker/bolder line, red dots pop
 # type: 'lin'(m,b), 'vert'(x), 'horz'(y)  + two points
 probs=[
- ('lin',(-3,7),[(1,4),(3,-2)]),    # 1  screenshot left   slope -3
- ('lin',(1,1),[(-3,-2),(0,1)]),    # 2  screenshot right  slope 1
- ('lin',(-3,1),[(-1,4),(1,-2)]),   # 3  mine              slope -3
- ('lin',(0.5,1),[(-4,-1),(2,2)]),  # 4  mine              slope 1/2
- ('vert',2,[(2,3),(2,-2)]),        # 5  vertical          undefined
- ('horz',-1,[(-3,-1),(2,-1)]),     # 6  horizontal        slope 0
+ ('lin',(2/3,1),[(-3,-1),(0,1)]),    # 1  non-reducible   2/3
+ ('lin',(-3/4,0.5),[(-2,2),(2,-1)]), # 2  non-reducible  -3/4
+ ('lin',(0.5,0),[(-2,-1),(2,1)]),    # 3  reducible       2/4 -> 1/2
+ ('lin',(2,0),[(-1,-2),(1,2)]),      # 4  whole number    4/2 -> 2
+ ('vert',2,[(2,3),(2,-2)]),          # 5  vertical         undefined
+ ('horz',-1,[(-3,-1),(2,-1)]),       # 6  horizontal       slope 0
 ]
 for idx,(typ,par,pts) in enumerate(probs,start=1):
     fig,ax=plt.subplots(figsize=(2.7,2.7),dpi=220)
