@@ -28,16 +28,16 @@ def formula():  # m = (y2 - y1) / (x2 - x1) stacked
                            ('ALIGN',(0,0),(-1,-1),'CENTER')]))
     return t
 
-def mrow_formula():
-    mrow=Table([[Paragraph("<i>m</i> =",MBIG), formula()]], colWidths=[0.5*inch,1.15*inch])
-    mrow.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'MIDDLE'),('LEFTPADDING',(0,0),(-1,-1),0),
-                              ('TOPPADDING',(0,0),(-1,-1),0),('BOTTOMPADDING',(0,0),(-1,-1),0)]))
-    return mrow
+def formula_block():  # the slope formula (fraction) alone, slightly indented
+    t=Table([["", formula()]], colWidths=[0.4*inch,1.15*inch])
+    t.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'MIDDLE'),('LEFTPADDING',(0,0),(-1,-1),0),
+                           ('TOPPADDING',(0,0),(-1,-1),0),('BOTTOMPADDING',(0,0),(-1,-1),0)]))
+    return t
 
 def box(points, w):
     inner=[Paragraph("Find the slope, simplify (reduce) if needed.", SMALL), Spacer(1,11),
-           Paragraph(f"Given the points {points}", BODY), Spacer(1,18),
-           mrow_formula(), Spacer(1,24),
+           Paragraph(f"Given the points {points}", BODY), Spacer(1,20),
+           formula_block(), Spacer(1,26),
            Paragraph("<i>m</i> = ______________", MBIG)]
     t=Table([[inner]], colWidths=[w*inch])
     t.setStyle(TableStyle([('BOX',(0,0),(-1,-1),1.0,colors.black),('VALIGN',(0,0),(-1,-1),'TOP'),
@@ -58,8 +58,8 @@ def two_col(boxes, colw=3.65):
 
 def num_box(n, points, w):
     inner=[Paragraph(f"{n}.  Find the slope, simplify (reduce) if needed.", SMALL), Spacer(1,11),
-           Paragraph(f"Given the points {points}", BODY), Spacer(1,18),
-           mrow_formula(), Spacer(1,24),
+           Paragraph(f"Given the points {points}", BODY), Spacer(1,20),
+           formula_block(), Spacer(1,26),
            Paragraph("<i>m</i> = ______________", MBIG)]
     t=Table([[inner]], colWidths=[w*inch])
     t.setStyle(TableStyle([('BOX',(0,0),(-1,-1),1.0,colors.black),('VALIGN',(0,0),(-1,-1),'TOP'),
