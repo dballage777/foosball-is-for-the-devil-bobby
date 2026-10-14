@@ -15,28 +15,34 @@ NAME=ParagraphStyle("N",**{**base,"fontSize":10.5})
 SMALL=ParagraphStyle("SM",**{**base,"fontSize":9.5,"leading":12})
 BODY=ParagraphStyle("B",**{**base,"fontSize":10.5,"leading":13})
 MST =ParagraphStyle("M",**{**base,"fontSize":11})
-FRc =ParagraphStyle("FR",**{**base,"fontSize":9.5,"alignment":TA_CENTER,"leading":11})
+MBIG=ParagraphStyle("MB",**{**base,"fontSize":13,"leading":16})
+FRc =ParagraphStyle("FR",**{**base,"fontSize":11,"alignment":TA_CENTER,"leading":13})
 NUM =ParagraphStyle("NU",**{**base,"fontName":"Helvetica-Bold","fontSize":10.5})
 FRr =ParagraphStyle("FRr",**{**base,"fontSize":10,"alignment":TA_CENTER,"leading":12})
 
 def formula():  # m = (y2 - y1) / (x2 - x1) stacked
     t=Table([[Paragraph("y<sub>2</sub> - y<sub>1</sub>",FRc)],[Paragraph("x<sub>2</sub> - x<sub>1</sub>",FRc)]],
-            colWidths=[0.9*inch])
+            colWidths=[1.05*inch])
     t.setStyle(TableStyle([('LINEBELOW',(0,0),(0,0),0.9,colors.black),
-                           ('TOPPADDING',(0,0),(-1,-1),1),('BOTTOMPADDING',(0,0),(-1,-1),1),
+                           ('TOPPADDING',(0,0),(-1,-1),2),('BOTTOMPADDING',(0,0),(-1,-1),2),
                            ('ALIGN',(0,0),(-1,-1),'CENTER')]))
     return t
 
+def mrow_formula():
+    mrow=Table([[Paragraph("<i>m</i> =",MBIG), formula()]], colWidths=[0.5*inch,1.15*inch])
+    mrow.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'MIDDLE'),('LEFTPADDING',(0,0),(-1,-1),0),
+                              ('TOPPADDING',(0,0),(-1,-1),0),('BOTTOMPADDING',(0,0),(-1,-1),0)]))
+    return mrow
+
 def box(points, w):
-    inner=[Paragraph("Find the slope, simplify (reduce) if needed.", SMALL), Spacer(1,3),
-           Paragraph(f"Given the points {points}", BODY), Spacer(1,5)]
-    mrow=Table([[Paragraph("m =",MST), formula()]], colWidths=[0.4*inch,1.0*inch])
-    mrow.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'MIDDLE'),('LEFTPADDING',(0,0),(-1,-1),0),('TOPPADDING',(0,0),(-1,-1),0),('BOTTOMPADDING',(0,0),(-1,-1),0)]))
-    inner+=[mrow, Spacer(1,6), Paragraph("m = ______________", MST)]
+    inner=[Paragraph("Find the slope, simplify (reduce) if needed.", SMALL), Spacer(1,11),
+           Paragraph(f"Given the points {points}", BODY), Spacer(1,18),
+           mrow_formula(), Spacer(1,24),
+           Paragraph("<i>m</i> = ______________", MBIG)]
     t=Table([[inner]], colWidths=[w*inch])
-    t.setStyle(TableStyle([('BOX',(0,0),(-1,-1),1.0,colors.black),
-                           ('LEFTPADDING',(0,0),(-1,-1),8),('RIGHTPADDING',(0,0),(-1,-1),8),
-                           ('TOPPADDING',(0,0),(-1,-1),7),('BOTTOMPADDING',(0,0),(-1,-1),8)]))
+    t.setStyle(TableStyle([('BOX',(0,0),(-1,-1),1.0,colors.black),('VALIGN',(0,0),(-1,-1),'TOP'),
+                           ('LEFTPADDING',(0,0),(-1,-1),10),('RIGHTPADDING',(0,0),(-1,-1),10),
+                           ('TOPPADDING',(0,0),(-1,-1),12),('BOTTOMPADDING',(0,0),(-1,-1),13)]))
     return t
 
 def two_col(boxes, colw=3.65):
@@ -51,14 +57,14 @@ def two_col(boxes, colw=3.65):
     return t
 
 def num_box(n, points, w):
-    inner=[Paragraph(f"{n}.  Given the points {points}", BODY), Spacer(1,5)]
-    mrow=Table([[Paragraph("m =",MST), formula()]], colWidths=[0.4*inch,1.0*inch])
-    mrow.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'MIDDLE'),('LEFTPADDING',(0,0),(-1,-1),0),('TOPPADDING',(0,0),(-1,-1),0),('BOTTOMPADDING',(0,0),(-1,-1),0)]))
-    inner+=[mrow, Spacer(1,5), Paragraph("m = ____________", MST)]
+    inner=[Paragraph(f"{n}.  Find the slope, simplify (reduce) if needed.", SMALL), Spacer(1,11),
+           Paragraph(f"Given the points {points}", BODY), Spacer(1,18),
+           mrow_formula(), Spacer(1,24),
+           Paragraph("<i>m</i> = ______________", MBIG)]
     t=Table([[inner]], colWidths=[w*inch])
-    t.setStyle(TableStyle([('BOX',(0,0),(-1,-1),1.0,colors.black),
-                           ('LEFTPADDING',(0,0),(-1,-1),8),('RIGHTPADDING',(0,0),(-1,-1),8),
-                           ('TOPPADDING',(0,0),(-1,-1),6),('BOTTOMPADDING',(0,0),(-1,-1),7)]))
+    t.setStyle(TableStyle([('BOX',(0,0),(-1,-1),1.0,colors.black),('VALIGN',(0,0),(-1,-1),'TOP'),
+                           ('LEFTPADDING',(0,0),(-1,-1),10),('RIGHTPADDING',(0,0),(-1,-1),10),
+                           ('TOPPADDING',(0,0),(-1,-1),12),('BOTTOMPADDING',(0,0),(-1,-1),13)]))
     return t
 
 # ---- graph problems ----
